@@ -1,49 +1,96 @@
 body {
-    font-family: Tahoma, Arial;
-    background: #f2f4f7;
-    direction: rtl;
     margin: 0;
-    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Arial;
+    background: linear-gradient(135deg, #f0f4ff, #e6f7f2);
+    direction: rtl;
+}
+
+header {
+    background: #3f51b5;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
 }
 
 .container {
-    background: #ffffff;
-    max-width: 900px;
-    margin: auto;
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h2 {
-    margin-top: 0;
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
 }
 
 input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
     font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
 
 .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 10px;
 }
 
 button {
-    padding: 8px 14px;
-    margin-left: 5px;
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    color: white;
 }
 
-#qr-reader {
-    width: 300px;
-    margin: 10px 0;
+.save { background: #4caf50; }
+.scan { background: #ff9800; }
+.clear { background: #f44336; }
+.toggle { background: #2196f3; }
+
+.viewer {
+    margin-top: 15px;
 }
 
 iframe {
     width: 100%;
     height: 600px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    pointer-events: none;
+}
+
+#qr-reader {
+    margin-top: 15px;
+}
+
+#message {
+    margin-top: 10px;
+    padding: 8px;
+    display: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin: 15px 0;
+}
+
+@media (max-width: 600px) {
+    iframe { height: 450px; }
 }
