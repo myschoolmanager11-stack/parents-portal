@@ -1,6 +1,7 @@
 const input = document.getElementById("driveLink");
 const viewer = document.getElementById("viewer");
 let qrScanner;
+let viewerInteractive = false;
 
 /* تحميل الرابط المحفوظ تلقائيًا */
 window.onload = function () {
@@ -41,10 +42,7 @@ function startQR() {
 
     qrScanner.start(
         { facingMode: "environment" },
-        {
-            fps: 10,
-            qrbox: 250
-        },
+        { fps: 10, qrbox: 250 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
             localStorage.setItem("drive_link", qrCodeMessage);
@@ -66,29 +64,16 @@ function loadFile(link) {
         return;
     }
 
-    const downloadUrl =
-        "https://drive.google.com/uc?export=download&id=" + fileId;
-
-    const viewerUrl =
-        "https://docs.google.com/viewer?embedded=true&url=" +
-        encodeURIComponent(downloadUrl);
+    // رابط مباشر + Google Docs Viewer
+    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
+    const viewerUrl = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
 
     viewer.src = viewerUrl;
     showMessage("تم تحميل الملف وعرضه بنجاح", false);
 }
 
-    // رابط المعاينة (أفضل لعرض PDF داخل iframe)
-    const previewUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
-
-    viewer.src = previewUrl;
-    showMessage("تم تحميل الملف وعرضه بنجاح", false);
-}
-
 /* استخراج File ID من الرابط */
 function extractFileId(link) {
-    // يدعم:
-    // /file/d/FILE_ID/view
-    // uc?id=FILE_ID
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
 
@@ -117,4 +102,15 @@ function showMessage(text, isError) {
     }
 }
 
+/* تفعيل أو تعطيل التفاعل مع iframe (الهاتف) */
+function toggleViewerInteraction() {
+    viewerInteractive = !viewerInteractive;
 
+    if (viewerInteractive) {
+        viewer.style.pointerEvents = "auto";
+        showMessage("تم تفعيل التفاعل مع الملف (يمكنك التمرير والتكبير)", false);
+    } else {
+        viewer.style.pointerEvents = "none";
+        showMessage("تم إيقاف التفاعل مع الملف للعودة للأزرار", false);
+    }
+}
