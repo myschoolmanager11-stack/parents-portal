@@ -1,64 +1,107 @@
 const input = document.getElementById("driveLink");
 const viewer = document.getElementById("viewer");
-let qrScanner = null;
+let qrScanner;
 
-// ��� ��� ������
+/* تحميل الرابط المحفوظ تلقائيًا */
 window.onload = function () {
     const savedLink = localStorage.getItem("drive_link");
+
     if (savedLink) {
         input.value = savedLink;
         loadFile(savedLink);
     }
 };
 
+/* حفظ الرابط */
 function saveLink() {
     const link = input.value.trim();
-    if (!link) {
-        alert("���� ������ ������");
+
+    if (link === "") {
+        showMessage("يرجى إدخال رابط ملف من Google Drive", true);
         return;
     }
+
     localStorage.setItem("drive_link", link);
     loadFile(link);
 }
 
+/* مسح الرابط */
 function clearLink() {
     localStorage.removeItem("drive_link");
     input.value = "";
     viewer.src = "";
-    document.getElementById("qr-reader").innerHTML = "";
+    showMessage("تم مسح الرابط بنجاح", false);
 }
 
-function loadFile(link) {
-    const fileId = extractFileId(link);
-    if (!fileId) {
-        alert("���� Google Drive ��� ����");
-        return;
-    }
-    const url = "https://drive.google.com/uc?export=download&id=" + fileId;
-    viewer.src = url;
-}
-
-function extractFileId(link) {
-    const match = link.match(/\/d\/([^\/]+)/);
-    return match ? match[1] : null;
-}
-
-// QR Code
+/* تشغيل قارئ QR */
 function startQR() {
-    const qrDiv = document.getElementById("qr-reader");
-    qrDiv.innerHTML = "";
+    document.getElementById("qr-reader").innerHTML = "";
 
     qrScanner = new Html5Qrcode("qr-reader");
 
     qrScanner.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        qrText => {
-            input.value = qrText;
-            localStorage.setItem("drive_link", qrText);
-            loadFile(qrText);
-            qrScanner.stop();
+        {
+            fps: 10,
+            qrbox: 250
         },
-        error => {}
+        qrCodeMessage => {
+            input.value = qrCodeMessage;
+            localStorage.setItem("drive_link", qrCodeMessage);
+            loadFile(qrCodeMessage);
+
+            qrScanner.stop();
+            showMessage("تم قراءة الرابط من QR بنجاح", false);
+        },
+        errorMessage => { }
     );
+}
+
+/* تحميل وعرض الملف */
+function loadFile(link) {
+    const fileId = extractFileId(link);
+
+    if (!fileId) {
+        showMessage("الرابط غير صالح، يرجى إدخال رابط ملف وليس مجلد", true);
+        return;
+    }
+
+    // رابط المعاينة (أفضل لعرض PDF داخل iframe)
+    const previewUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
+
+    viewer.src = previewUrl;
+    showMessage("تم تحميل الملف وعرضه بنجاح", false);
+}
+
+/* استخراج File ID من الرابط */
+function extractFileId(link) {
+    // يدعم:
+    // /file/d/FILE_ID/view
+    // uc?id=FILE_ID
+    let match = link.match(/\/file\/d\/([^\/]+)/);
+    if (match) return match[1];
+
+    match = link.match(/id=([^&]+)/);
+    if (match) return match[1];
+
+    return null;
+}
+
+/* عرض رسالة داخل الصفحة */
+function showMessage(text, isError) {
+    const msg = document.getElementById("message");
+    if (!msg) return;
+
+    msg.style.display = "block";
+    msg.textContent = text;
+
+    if (isError) {
+        msg.style.background = "#ffebee";
+        msg.style.color = "#c62828";
+        msg.style.border = "1px solid #ef9a9a";
+    } else {
+        msg.style.background = "#e8f5e9";
+        msg.style.color = "#2e7d32";
+        msg.style.border = "1px solid #a5d6a7";
+    }
 }
