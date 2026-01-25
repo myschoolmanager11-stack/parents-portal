@@ -117,17 +117,4 @@ function showMessage(text, isError) {
     }
 }
 
-let viewerInteractive = false;
-
-function toggleViewerInteraction() {
-    viewerInteractive = !viewerInteractive;
-
-    if (viewerInteractive) {
-        viewer.style.pointerEvents = "auto";
-        showMessage("تم تفعيل التفاعل مع الملف (يمكنك التمرير والتكبير)", false);
-    } else {
-        viewer.style.pointerEvents = "none";
-        showMessage("تم إيقاف التفاعل مع الملف للعودة للأزرار", false);
-    }
-}
 
