@@ -2,39 +2,37 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>عارض ملفات Google Drive</title>
-
-    <!-- مكتبة QR -->
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
+    <title>Myschoolmanager عارض ملفات متعدد</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>📂 عارض ملفات Google Drive</header>
+<header>📂 عارض ملفات متعدد الأنواع</header>
 
 <div class="container">
 
     <label>رابط الملف</label>
     <input type="text" id="driveLink" placeholder="الصق رابط Google Drive هنا">
 
-   <div class="buttons">
-    <button class="save" onclick="saveLink()">💾 حفظ</button>
-    <button class="scan" onclick="startQR()">📷 مسح QR</button>
-    <button class="clear" onclick="clearLink()">🗑️ مسح</button>
-</div>
+    <div class="buttons">
+        <button class="save" onclick="saveLink()">💾 حفظ</button>
+        <button class="scan" onclick="startQR()">📷 مسح QR</button>
+        <button class="clear" onclick="clearLink()">🗑️ مسح</button>
+    </div>
 
     <div id="qr-reader"></div>
     <div id="message"></div>
 
-    <div class="viewer">
-        <iframe id="viewer"></iframe>
+    <div class="viewer" id="viewerContainer">
+        <!-- الملف سيظهر هنا -->
     </div>
 
 </div>
 
-<footer>يعمل تلقائيًا عند فتح الصفحة • Google Drive Viewer</footer>
+<footer>يدعم PDF, TXT, الصور, Word, Excel • يعمل تلقائيًا على جميع الأجهزة</footer>
 
 <script src="app.js"></script>
 
