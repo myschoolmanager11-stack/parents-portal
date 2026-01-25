@@ -66,6 +66,17 @@ function loadFile(link) {
         return;
     }
 
+    const downloadUrl =
+        "https://drive.google.com/uc?export=download&id=" + fileId;
+
+    const viewerUrl =
+        "https://docs.google.com/viewer?embedded=true&url=" +
+        encodeURIComponent(downloadUrl);
+
+    viewer.src = viewerUrl;
+    showMessage("تم تحميل الملف وعرضه بنجاح", false);
+}
+
     // رابط المعاينة (أفضل لعرض PDF داخل iframe)
     const previewUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
 
@@ -105,3 +116,4 @@ function showMessage(text, isError) {
         msg.style.border = "1px solid #a5d6a7";
     }
 }
+
