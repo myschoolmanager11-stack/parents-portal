@@ -3,31 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <title>عارض ملفات Google Drive</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- QR Library -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Arial;
+            background: linear-gradient(135deg, #f0f4ff, #e6f7f2);
+            direction: rtl;
+        }
+
+        header {
+            background: #3f51b5;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .save {
+            background: #4caf50;
+        }
+
+        .scan {
+            background: #ff9800;
+        }
+
+        .clear {
+            background: #f44336;
+        }
+
+        .viewer {
+            margin-top: 15px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        #qr-reader {
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            iframe {
+                height: 450px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>?? عارض ملفات Google Drive</h2>
+<header>
+    📂 عارض ملفات Google Drive
+</header>
 
-    <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسحه QR">
+<div class="container">
+
+    <label>رابط الملف</label>
+    <input type="text" id="driveLink" placeholder="الصق رابط Google Drive هنا">
 
     <div class="buttons">
-        <button onclick="saveLink()"> حفظ</button>
-        <button onclick="startQR()">مسح QR</button>
-        <button onclick="clearLink()">مسح</button>
+        <button class="save" onclick="saveLink()">💾 حفظ</button>
+        <button class="scan" onclick="startQR()">📷 مسح QR</button>
+        <button class="clear" onclick="clearLink()">🗑️ مسح</button>
     </div>
 
     <div id="qr-reader"></div>
 
-    <iframe id="viewer" title="File Viewer"></iframe>
+    <div class="viewer">
+        <iframe id="viewer"></iframe>
+    </div>
+
 </div>
 
+<footer>
+    يعمل تلقائيًا عند فتح الصفحة • Google Drive Viewer
+</footer>
+
 <script src="app.js"></script>
+
 </body>
 </html>
