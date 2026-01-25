@@ -1,7 +1,6 @@
 const input = document.getElementById("driveLink");
 const viewer = document.getElementById("viewer");
 let qrScanner;
-let viewerInteractive = false;
 
 /* تحميل الرابط المحفوظ تلقائيًا */
 window.onload = function () {
@@ -18,7 +17,7 @@ function saveLink() {
     const link = input.value.trim();
 
     if (link === "") {
-        showMessage("يرجى إدخال رابط ملف من Google Drive", true);
+        showMessage("يرجى إدخال رابط الملف", true);
         return;
     }
 
@@ -64,7 +63,6 @@ function loadFile(link) {
         return;
     }
 
-    // رابط مباشر + Google Docs Viewer
     const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
     const viewerUrl = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
 
@@ -99,18 +97,5 @@ function showMessage(text, isError) {
         msg.style.background = "#e8f5e9";
         msg.style.color = "#2e7d32";
         msg.style.border = "1px solid #a5d6a7";
-    }
-}
-
-/* تفعيل أو تعطيل التفاعل مع iframe (الهاتف) */
-function toggleViewerInteraction() {
-    viewerInteractive = !viewerInteractive;
-
-    if (viewerInteractive) {
-        viewer.style.pointerEvents = "auto";
-        showMessage("تم تفعيل التفاعل مع الملف (يمكنك التمرير والتكبير)", false);
-    } else {
-        viewer.style.pointerEvents = "none";
-        showMessage("تم إيقاف التفاعل مع الملف للعودة للأزرار", false);
     }
 }
