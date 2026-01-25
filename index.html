@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>عارض ملفات Google Drive</title>
 
-    <!-- QR Library -->
+    <!-- مكتبة QR -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +53,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            margin-bottom: 10px;
         }
 
         button {
@@ -65,17 +66,10 @@
             color: white;
         }
 
-        .save {
-            background: #4caf50;
-        }
-
-        .scan {
-            background: #ff9800;
-        }
-
-        .clear {
-            background: #f44336;
-        }
+        .save { background: #4caf50; }
+        .scan { background: #ff9800; }
+        .clear { background: #f44336; }
+        .toggle { background: #2196f3; }
 
         .viewer {
             margin-top: 15px;
@@ -87,10 +81,19 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             background: #fafafa;
+            pointer-events: none; /* مهم لمنع الأزرار من التعطيل على الهاتف */
         }
 
         #qr-reader {
             margin-top: 15px;
+        }
+
+        #message {
+            margin-top: 10px;
+            padding: 8px;
+            display: none;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         footer {
@@ -101,17 +104,13 @@
         }
 
         @media (max-width: 600px) {
-            iframe {
-                height: 450px;
-            }
+            iframe { height: 450px; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    📂 عارض ملفات Google Drive
-</header>
+<header>📂 عارض ملفات Google Drive</header>
 
 <div class="container">
 
@@ -122,9 +121,11 @@
         <button class="save" onclick="saveLink()">💾 حفظ</button>
         <button class="scan" onclick="startQR()">📷 مسح QR</button>
         <button class="clear" onclick="clearLink()">🗑️ مسح</button>
+        <button class="toggle" onclick="toggleViewerInteraction()">👆 تفعيل / إيقاف التفاعل</button>
     </div>
 
     <div id="qr-reader"></div>
+    <div id="message"></div>
 
     <div class="viewer">
         <iframe id="viewer"></iframe>
@@ -132,9 +133,7 @@
 
 </div>
 
-<footer>
-    يعمل تلقائيًا عند فتح الصفحة • Google Drive Viewer
-</footer>
+<footer>يعمل تلقائيًا عند فتح الصفحة • Google Drive Viewer</footer>
 
 <script src="app.js"></script>
 
