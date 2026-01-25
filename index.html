@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>عارض ملفات Google Drive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- QR Library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>?? عارض ملفات Google Drive</h2>
+
+    <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسحه QR">
+
+    <div class="buttons">
+        <button onclick="saveLink()"> حفظ</button>
+        <button onclick="startQR()">مسح QR</button>
+        <button onclick="clearLink()">مسح</button>
+    </div>
+
+    <div id="qr-reader"></div>
+
+    <iframe id="viewer" title="File Viewer"></iframe>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
