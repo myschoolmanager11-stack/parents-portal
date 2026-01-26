@@ -5,56 +5,50 @@
     <title>Myschoolmanager – عارض الملفات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- QR Scanner -->
+    <!-- QR -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===== الشريط العلوي ===== -->
 <header class="top-bar">
+   <div class="app-title">
+    <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
+    <div id="subTitle"></div>
+   </div>
 
-    <!-- حاوية الزر والقائمة -->
-    <div class="menu-wrapper">
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
-        <button class="clear-all" onclick="clearAllLinks()">🗑️ مسح كل الروابط</button>
+   <div class="menu-wrapper">
+       <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-        <div class="dropdown-menu" id="dropdownMenu">
-            <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
-            <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
-            <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
-            <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
-            <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
-            <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
-        </div>
-    </div>
+       <div class="dropdown-menu" id="dropdownMenu">
+           <!-- زر مسح كل الروابط -->
+           <div id="clearAllBtn" onclick="clearAllLinks()" class="disabled">🗑️ مسح كل الروابط</div>
 
-    <div class="app-title">
-        <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
-        <div id="subTitle"></div>
-    </div>
+           <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
+           <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
+           <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
+           <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
+           <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
+           <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
+       </div>
+   </div>
 </header>
 
-<!-- ===== المحتوى الرئيسي ===== -->
 <div class="container">
-
     <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية 👋</h2>
 
     <p class="welcome-text">
         يُعتبر فضاء الأولياء منصة رقمية نوعية ووسيلة تكنولوجية فعالة لتعزيز مشاركة أولياء الأمور في العملية التعليمية.<br>
-        يوفر لهم بيئة رقمية غنية بمجموعة من الخدمات والمعلومات التي تساعدهم على مرافقة أبنائهم طيلة مسارهم الدراسي.<br>
+        يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br><br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
     </p>
 
     <div class="viewer" id="viewerContainer"></div>
-
 </div>
 
-<!-- ===== نافذة إدخال الرابط (Modal) ===== -->
 <div class="modal" id="linkModal">
     <div class="modal-content">
-
         <h3 id="modalTitle">إدخال رابط</h3>
 
         <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسح QR">
@@ -62,13 +56,12 @@
         <div class="modal-buttons">
             <button class="save" onclick="saveLink()">💾 حفظ</button>
             <button class="scan" onclick="startQR()">📷 مسح QR</button>
-            <button class="clear-current" onclick="clearCurrentLink()">🗑️ مسح الرابط الحالي</button>
             <button class="close" onclick="closeModal()">✖ إغلاق</button>
+            <button class="clear-current" onclick="clearCurrentLink()" disabled>🗑️ مسح الرابط الحالي</button>
         </div>
 
         <div id="qr-reader"></div>
         <div id="message"></div>
-
     </div>
 </div>
 
