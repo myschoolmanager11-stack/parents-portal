@@ -1,48 +1,49 @@
 body {
     margin: 0;
     font-family: "Segoe UI", Tahoma, Arial;
-    background: #f4f6fb;
+    background: linear-gradient(135deg, #f0f4ff, #e6f7f2);
     direction: rtl;
 }
 
-/* الشريط العلوي */
+/* ===== الشريط العلوي ===== */
 .top-bar {
     background: #3f51b5;
     color: #fff;
-    padding: 12px;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
 }
 
-/* الأزرار في اليمين */
-.right-buttons {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    display: flex;
-    gap: 8px;
+.app-title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
 }
 
-.menu-btn,
-.clear-all-btn {
+#schoolName {
+    font-size: 13px;
+    color: #e0e0e0;
+    opacity: 0.8;
+    margin-top: 3px;
+    font-weight: normal;
+}
+
+.right-buttons button {
     background: transparent;
     border: none;
     color: #fff;
     font-size: 22px;
     cursor: pointer;
+    margin-left: 8px;
 }
 
-/* عنوان التطبيق */
-.app-title {
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-/* القائمة */
+/* ===== القائمة ===== */
 .dropdown-menu {
     position: absolute;
     top: 55px;
-    right: 10px;
+    right: 0;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -63,23 +64,36 @@ body {
     font-size: 14px;
 }
 
-.dropdown-menu div:hover {
-    background: #f0f4ff;
-}
-
 .dropdown-menu div:last-child {
     border-bottom: none;
 }
 
-/* المحتوى */
+.dropdown-menu div:hover {
+    background: #f0f4ff;
+}
+
+/* ===== الحاوية ===== */
 .container {
     max-width: 1000px;
     margin: 20px auto;
     background: white;
     border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     padding: 20px;
 }
 
+.container h2 {
+    margin-top: 0;
+    color: #3f51b5;
+}
+
+.welcome-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+}
+
+/* ===== عارض الملفات ===== */
 .viewer iframe,
 .viewer img,
 .viewer pre {
@@ -92,7 +106,20 @@ body {
     height: 600px;
 }
 
-/* نافذة المودال */
+.viewer img {
+    max-height: 600px;
+    object-fit: contain;
+}
+
+.viewer pre {
+    background: #f5f5f5;
+    padding: 15px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* ===== المودال ===== */
 .modal {
     position: fixed;
     inset: 0;
@@ -111,25 +138,33 @@ body {
     max-width: 400px;
 }
 
-.modal-content input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.modal-content h3 {
+    margin-top: 0;
+    color: #3f51b5;
+    font-size: 16px;
 }
 
-/* أزرار المودال */
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
 .modal-buttons {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
 }
 
 .modal-buttons button {
     flex: 1;
     padding: 10px;
-    border-radius: 6px;
+    font-size: 14px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
     color: #fff;
 }
@@ -138,40 +173,32 @@ body {
 .scan { background: #ff9800; }
 .close { background: #9e9e9e; }
 
-/* الهاتف */
-@media (max-width: 600px) {
-    .dropdown-menu {
-        right: 10px;
-        left: 10px;
-        min-width: auto;
-    }
+#qr-reader { margin-top: 15px; }
+#message { margin-top: 10px; padding: 8px; display: none; border-radius: 6px; font-size: 14px; }
 
-    .viewer iframe {
-        height: 450px;
-    }
-}
+/* ===== التذييل ===== */
 .app-footer {
-    background-color: #1e88e5; /* نفس لون الشريط العلوي */
-    color: white;
-    height: 40px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+    background: #3f51b5;
+    color: #fff;
+    text-align: center;
+    padding: 8px 0;
 }
 
 .footer-marquee {
-    white-space: nowrap;
     display: inline-block;
-    padding-left: 100%;
-    animation: marquee-rtl 15s linear infinite;
-    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: marquee 15s linear infinite;
 }
 
-@keyframes marquee-rtl {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%);
-    }
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* ===== تحسين الهاتف ===== */
+@media (max-width: 600px) {
+    .viewer iframe { height: 450px; }
+    .viewer img, .viewer pre { max-height: 400px; }
+    .dropdown-menu { left: 5px; right: 5px; min-width: auto; }
 }
