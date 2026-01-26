@@ -1,3 +1,6 @@
+/* =====================
+   إعدادات عامة
+===================== */
 body {
     margin: 0;
     font-family: "Segoe UI", Tahoma, Arial;
@@ -5,7 +8,9 @@ body {
     direction: rtl;
 }
 
-/* الشريط العلوي */
+/* =====================
+   الشريط العلوي
+===================== */
 .top-bar {
     background: #3f51b5;
     color: #fff;
@@ -13,7 +18,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
 }
 
 .app-title {
@@ -21,12 +25,7 @@ body {
     font-weight: bold;
 }
 
-/* زر القائمة في أقصى اليسار */
-.menu-btn.left {
-    position: absolute;
-    left: 10px;
-    top: 12px;
-    z-index: 1001;
+.menu-btn {
     background: transparent;
     border: none;
     color: #fff;
@@ -34,11 +33,14 @@ body {
     cursor: pointer;
 }
 
-/* القائمة المنسدلة مستقلة أسفل الزر */
+/* =====================
+   القائمة المنسدلة
+===================== */
 .dropdown-menu {
     position: absolute;
-    top: 50px;  /* أسفل الزر مباشرة */
-    left: 10px; /* محاذاة للزر على اليسار */
+    top: 55px;
+    right: 10px;   /* نقلها لليسار في واجهة RTL */
+    left: auto;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -47,22 +49,29 @@ body {
     z-index: 1000;
 }
 
+.dropdown-menu.show {
+    display: block;
+}
+
 .dropdown-menu div {
     padding: 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
-    color: #000;
+    color: #000;              /* لون النص أسود */
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-.dropdown-menu div:last-child { border-bottom: none; }
-.dropdown-menu div.disabled { opacity: 0.5; pointer-events: none; }
-.dropdown-menu div:hover:not(.disabled) { background: #f0f4ff; }
+.dropdown-menu div:last-child {
+    border-bottom: none;
+}
 
-/* الحاوية الرئيسية */
+.dropdown-menu div:hover {
+    background: #f0f4ff;
+}
+
+/* =====================
+   الحاوية الرئيسية
+===================== */
 .container {
     max-width: 1000px;
     margin: 20px auto;
@@ -72,19 +81,52 @@ body {
     padding: 20px;
 }
 
-.container h2 { margin-top: 0; color: #3f51b5; }
-.welcome-text { font-size: 15px; line-height: 1.7; color: #555; }
-
-/* عارض الملفات */
-.viewer { margin-top: 20px; }
-.viewer iframe, .viewer img, .viewer pre {
-    width: 100%; border-radius: 8px; border: 1px solid #ddd;
+.container h2 {
+    margin-top: 0;
+    color: #3f51b5;
 }
-.viewer iframe { height: 600px; }
-.viewer img { max-height: 600px; object-fit: contain; }
-.viewer pre { background: #f5f5f5; padding: 15px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
 
-/* نافذة المودال */
+.welcome-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+}
+
+/* =====================
+   عارض الملفات
+===================== */
+.viewer {
+    margin-top: 20px;
+}
+
+.viewer iframe,
+.viewer img,
+.viewer pre {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.viewer iframe {
+    height: 600px;
+}
+
+.viewer img {
+    max-height: 600px;
+    object-fit: contain;
+}
+
+.viewer pre {
+    background: #f5f5f5;
+    padding: 15px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* =====================
+   نافذة Modal
+===================== */
 .modal {
     position: fixed;
     inset: 0;
@@ -94,6 +136,7 @@ body {
     align-items: center;
     z-index: 2000;
 }
+
 .modal-content {
     background: #fff;
     border-radius: 10px;
@@ -101,30 +144,105 @@ body {
     width: 90%;
     max-width: 400px;
 }
-.modal-content h3 { margin-top: 0; color: #3f51b5; font-size: 16px; }
-.modal-content input {
-    width: 100%; padding: 10px; font-size: 14px;
-    border-radius: 6px; border: 1px solid #ccc; margin-bottom: 10px;
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #3f51b5;
+    font-size: 16px;
 }
 
-/* أزرار المودال */
-.modal-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-.modal-buttons button { flex: 1; padding: 10px; font-size: 14px; border: none; border-radius: 6px; cursor: pointer; color: #fff; }
-.save { background: #4caf50; }
-.scan { background: #ff9800; }
-.close { background: #9e9e9e; }
-.clear-current { background: #f44336; }
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
 
-/* QR + الرسائل */
-#qr-reader { margin-top: 15px; }
-#message { margin-top: 10px; padding: 8px; display: none; border-radius: 6px; font-size: 14px; }
+/* =====================
+   أزرار المودال
+===================== */
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+}
 
-/* التذييل */
-footer { text-align: center; font-size: 12px; color: #777; margin: 15px 0; }
+.modal-buttons button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+}
 
-/* الهاتف */
+.save {
+    background: #4caf50;
+}
+
+.scan {
+    background: #ff9800;
+}
+
+.close {
+    background: #9e9e9e;
+}
+
+/* =====================
+   QR + رسائل
+===================== */
+#qr-reader {
+    margin-top: 15px;
+}
+
+#message {
+    margin-top: 10px;
+    padding: 8px;
+    display: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* =====================
+   التذييل
+===================== */
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin: 15px 0;
+}
+
+/* =====================
+   تحسين الهاتف
+===================== */
 @media (max-width: 600px) {
-    .viewer iframe { height: 450px; }
-    .viewer img, .viewer pre { max-height: 400px; }
-    .dropdown-menu { left: 0; min-width: 90%; }
+    .viewer iframe {
+        height: 450px;
+    }
+
+    .viewer img,
+    .viewer pre {
+        max-height: 400px;
+    }
+
+    .dropdown-menu {
+        left: 5px;
+        right: 5px;
+        min-width: auto;
+    }
+}
+
+.dropdown-menu div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#subTitle {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 3px;
 }
