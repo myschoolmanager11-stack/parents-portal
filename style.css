@@ -241,3 +241,8 @@ footer {
     gap: 8px;
 }
 
+#subTitle {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 3px;
+}
