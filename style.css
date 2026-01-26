@@ -20,20 +20,36 @@ body {
     margin-right: 15px;
 }
 
+.menu-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .menu-btn {
     background: transparent;
     border: none;
     color: #fff;
     font-size: 22px;
     cursor: pointer;
-    margin-left: 10px;
 }
+
+.clear-all {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.clear-all:hover { background: #d32f2f; }
 
 .dropdown-menu {
     position: absolute;
-    top: 55px;
-    left: 10px;
-    right: auto;
+    top: 40px;
+    left: 0;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -99,7 +115,7 @@ body {
 .modal-content h3 { margin-top: 0; color: #3f51b5; font-size: 16px; }
 .modal-content input { width: 100%; padding: 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 10px; }
 
-.modal-buttons { display: flex; gap: 8px; }
+.modal-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
 .modal-buttons button {
     flex: 1;
     padding: 10px;
@@ -112,6 +128,7 @@ body {
 
 .save { background: #4caf50; }
 .scan { background: #ff9800; }
+.clear-current { background: #e53935; }
 .close { background: #9e9e9e; }
 
 #qr-reader { margin-top: 15px; }
