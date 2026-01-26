@@ -5,58 +5,62 @@
     <title>Myschoolmanager – عارض الملفات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- QR -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top-bar">
+
+    <!-- أزرار اليسار -->
+    <div class="left-buttons">
+        <!-- زر القائمة -->
+        <button class="menu-btn" onclick="toggleMenu()" title="القائمة">☰</button>
+
+        <!-- زر مسح جميع الروابط -->
+        <button class="clear-all-btn" onclick="clearAllLinks()" title="مسح جميع الروابط">
+            🗑️
+        </button>
+    </div>
+
     <div class="app-title">
         <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
         <div id="subTitle"></div>
     </div>
 
-    <!-- زر القائمة في أقصى اليسار -->
-    <button class="menu-btn left" onclick="toggleMenu()">☰</button>
-
-    <!-- القائمة المنسدلة -->
+    <!-- القائمة -->
     <div class="dropdown-menu" id="dropdownMenu">
-        <div id="clearAllBtn" onclick="clearAllLinks()" class="disabled">🗑️ مسح كل الروابط</div>
-
-        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
-        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
-        <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
-        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
-        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
-        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
+        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 سجل الغيابات</div>
+        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 استقبال الأولياء</div>
+        <div onclick="openModal('جدول الفروض والاختبارات')">📝 الفروض والاختبارات</div>
+        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 جدول التوقيت</div>
+        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 بطاقة التعريف</div>
+        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 وثائق مختلفة</div>
     </div>
+
 </header>
 
 <div class="container">
     <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية 👋</h2>
-
-    <p class="welcome-text">
+     <p class="welcome-text">
         يُعتبر فضاء الأولياء منصة رقمية نوعية ووسيلة تكنولوجية فعالة لتعزيز مشاركة أولياء الأمور في العملية التعليمية.<br>
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br><br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
     </p>
-
     <div class="viewer" id="viewerContainer"></div>
 </div>
 
+<!-- نافذة الرابط -->
 <div class="modal" id="linkModal">
     <div class="modal-content">
-        <h3 id="modalTitle">إدخال رابط</h3>
+        <h3 id="modalTitle"></h3>
 
-        <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسح QR">
+        <input id="driveLink" placeholder="الصق الرابط أو امسح QR">
 
         <div class="modal-buttons">
-            <button class="save" onclick="saveLink()">💾 حفظ</button>
-            <button class="scan" onclick="startQR()">📷 مسح QR</button>
-            <button class="close" onclick="closeModal()">✖ إغلاق</button>
-            <button class="clear-current" onclick="clearCurrentLink()" disabled>🗑️ مسح الرابط الحالي</button>
+            <button class="save" onclick="saveLink()">حفظ</button>
+            <button class="scan" onclick="startQR()">QR</button>
+            <button class="close" onclick="closeModal()">إغلاق</button>
         </div>
 
         <div id="qr-reader"></div>
@@ -65,7 +69,7 @@
 </div>
 
 <footer>
-    Myschoolmanager 2026 ©
+    Myschoolmanager 2026
 </footer>
 
 <script src="app.js"></script>
