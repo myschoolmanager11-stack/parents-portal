@@ -24,21 +24,14 @@ function openModal(itemName) {
     let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
     input.value = allLinks[currentItemKey] || "";
 
-    document.getElementById("subTitle").textContent = "";
     modal.style.display = "flex";
-    toggleMenu();
 }
 
 function closeModal() { modal.style.display = "none"; stopQR(); }
 
 function saveLink() {
     const link = input.value.trim();
-    if (!link) {
-        showMessage("يرجى إدخال رابط صالح", true);
-        selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
-        document.getElementById("subTitle").textContent = "";
-        return;
-    }
+    if (!link) { clearCurrentLink(); showMessage("يرجى إدخال رابط صالح", true); return; }
 
     let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
     allLinks[currentItemKey] = link;
@@ -46,16 +39,7 @@ function saveLink() {
 
     closeModal();
     loadFile(link);
-
-    const fileId = extractFileId(link);
-    if (fileId) {
-        const itemName = currentItemKey.replace("drive_item_", "");
-        selectedTitle.textContent = itemName;
-        document.getElementById("subTitle").textContent = itemName;
-    } else {
-        selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
-        document.getElementById("subTitle").textContent = "";
-    }
+    updateTitle(link);
 }
 
 function startQR() {
@@ -67,9 +51,8 @@ function startQR() {
         { facingMode: "environment" },
         { fps: 10, qrbox: 220 },
         qrCodeMessage => {
-            input.value = qrCodeMessage;
-
             if (!qrCodeMessage.trim()) return;
+            input.value = qrCodeMessage;
 
             let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
             allLinks[currentItemKey] = qrCodeMessage;
@@ -77,23 +60,35 @@ function startQR() {
 
             stopQR();
             closeModal();
-
             loadFile(qrCodeMessage);
-
-            const fileId = extractFileId(qrCodeMessage);
-            if (fileId) {
-                const itemName = currentItemKey.replace("drive_item_", "");
-                selectedTitle.textContent = itemName;
-                document.getElementById("subTitle").textContent = itemName;
-            } else {
-                selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
-                document.getElementById("subTitle").textContent = "";
-            }
+            updateTitle(qrCodeMessage);
         }
     );
 }
 
 function stopQR() { if (qrScanner) { qrScanner.stop().catch(() => {}); qrScanner = null; } }
+
+function clearCurrentLink() {
+    if (!currentItemKey) return;
+    let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
+    delete allLinks[currentItemKey];
+    localStorage.setItem("drive_links", JSON.stringify(allLinks));
+    input.value = "";
+    selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
+    document.getElementById("subTitle").textContent = "";
+    viewerContainer.innerHTML = "";
+    showMessage("تم مسح الرابط الحالي", false);
+}
+
+function clearAllLinks() {
+    if (confirm("هل تريد مسح جميع الروابط المحفوظة؟")) {
+        localStorage.removeItem("drive_links");
+        selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
+        document.getElementById("subTitle").textContent = "";
+        viewerContainer.innerHTML = "";
+        showMessage("تم مسح جميع الروابط", false);
+    }
+}
 
 function loadFile(link) {
     viewerContainer.innerHTML = "";
@@ -130,6 +125,18 @@ function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/); if (match) return match[1];
     match = link.match(/id=([^&]+)/); if (match) return match[1];
     return null;
+}
+
+function updateTitle(link) {
+    const fileId = extractFileId(link);
+    if (fileId) {
+        const itemName = currentItemKey.replace("drive_item_", "");
+        selectedTitle.textContent = itemName;
+        document.getElementById("subTitle").textContent = itemName;
+    } else {
+        selectedTitle.textContent = "فضاء خدماتنا الرقمية 👋";
+        document.getElementById("subTitle").textContent = "";
+    }
 }
 
 function showMessage(text, isError) {
