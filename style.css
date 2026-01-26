@@ -175,3 +175,17 @@ body {
         transform: translateX(-100%);
     }
 }
+
+.download-btn {
+    background-color: #1e88e5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.download-btn:hover {
+    background-color: #1565c0;
+}
