@@ -72,11 +72,12 @@ function stopQR() {
 
 /* تحميل الملف */
 function loadFile(link) {
-    viewerContainer.innerHTML = "";
+    viewer.innerHTML = "";
+    downloadContainer.style.display = "none";
 
     const fileId = extractFileId(link);
     if (!fileId) {
-        showMessage("رابط Google Drive غير صالح", true);
+        viewer.innerHTML = "<p>❌ رابط غير صالح</p>";
         return;
     }
 
@@ -92,7 +93,11 @@ function loadFile(link) {
     iframe.style.height = "600px";
     iframe.style.border = "none";
 
-    viewerContainer.appendChild(iframe);
+    viewer.appendChild(iframe);
+
+    // زر التحميل
+    downloadBtn.href = downloadUrl;
+    downloadContainer.style.display = "block";
 }
 
 /* استخراج File ID */
@@ -141,3 +146,4 @@ function clearAllLinks() {
     viewerContainer.innerHTML = "";
     selectedTitle.textContent = "تم مسح جميع الروابط";
 }
+
