@@ -1,115 +1,89 @@
 body {
     margin: 0;
-    font-family: "Segoe UI", Tahoma, Arial;
-    background: linear-gradient(135deg, #f0f4ff, #e6f7f2);
+    font-family: Segoe UI, Tahoma;
     direction: rtl;
+    background: #f4f6fb;
 }
 
 /* الشريط العلوي */
 .top-bar {
     background: #3f51b5;
-    color: #fff;
-    padding: 12px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: white;
+    padding: 10px;
     position: relative;
 }
 
-.app-title {
-    font-size: 16px;
-    font-weight: bold;
+/* أزرار اليسار */
+.left-buttons {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    display: flex;
+    gap: 8px;
 }
 
-/* زر القائمة على أقصى اليسار */
-.menu-btn.left {
-    position: fixed;
-    left: 10px;
-    top: 12px;
-    z-index: 1001;
+.menu-btn,
+.clear-all-btn {
     background: transparent;
     border: none;
-    color: #fff;
+    color: white;
     font-size: 22px;
     cursor: pointer;
 }
 
-/* القائمة المنسدلة أسفل الزر */
+/* القائمة */
 .dropdown-menu {
-    position: fixed;
+    position: absolute;
     top: 50px;
     left: 10px;
-    background: #fff;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
     display: none;
-    min-width: 260px;
+    min-width: 230px;
     z-index: 1000;
+}
+
+/* ⭐ الحل النهائي */
+.dropdown-menu.show {
+    display: block;
 }
 
 .dropdown-menu div {
     padding: 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
-    color: #000;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-.dropdown-menu div:last-child { border-bottom: none; }
-.dropdown-menu div.disabled { opacity: 0.5; pointer-events: none; }
-.dropdown-menu div:hover:not(.disabled) { background: #f0f4ff; }
+.dropdown-menu div:hover {
+    background: #f0f4ff;
+}
 
-/* الحاوية الرئيسية */
+/* المحتوى */
 .container {
-    max-width: 1000px;
-    margin: 20px auto;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     padding: 20px;
 }
 
-.container h2 { margin-top: 0; color: #3f51b5; }
-.welcome-text { font-size: 15px; line-height: 1.7; color: #555; }
-
-/* عارض الملفات */
-.viewer { margin-top: 20px; }
-.viewer iframe, .viewer img, .viewer pre {
-    width: 100%; border-radius: 8px; border: 1px solid #ddd;
+.viewer iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
 }
-.viewer iframe { height: 600px; }
-.viewer img { max-height: 600px; object-fit: contain; }
-.viewer pre { background: #f5f5f5; padding: 15px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
 
-/* نافذة المودال */
+/* المودال */
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,.5);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
 }
+
 .modal-content {
-    background: #fff;
-    border-radius: 10px;
+    background: white;
     padding: 20px;
     width: 90%;
     max-width: 400px;
+    border-radius: 8px;
 }
-.modal-content h3 { margin-top: 0; color: #3f51b5; font-size: 16px; }
-.modal-content input {
-    width: 100%; padding: 10px; font-size: 14px;
-    border-radius: 6px; border: 1px solid #ccc; margin-bottom: 10px;
-}
-
-/* أزرار المودال */
-.modal-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-.modal-buttons button { flex: 1; padding: 10px; font-size: 14px; border: none; border-radius: 6px; cursor: pointer; color: #fff; }
-.save { background: #4caf50; }
-.scan { background: #ff9800; }
-.close { background: #9
