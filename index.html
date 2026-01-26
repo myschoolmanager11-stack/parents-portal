@@ -1,38 +1,76 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Myschoolmanager عارض ملفات متعدد</title>
+    <title>Myschoolmanager – عارض الملفات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- QR -->
     <script src="https://unpkg.com/html5-qrcode"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>📂 عارض ملفات متعدد الأنواع</header>
+<!-- ===== الشريط العلوي ===== -->
+<header class="top-bar">
+    <span class="app-title">📂 عارض ملفات متعدد الأنواع</span>
 
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">سجل الغيابات والمراسلات الإدارية</div>
+        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">جدول استقبال أولياء التلاميذ</div>
+        <div onclick="openModal('جدول الفروض والاختبارات')">جدول الفروض والاختبارات</div>
+        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">جدول التوقيت الأسبوعي للدراسة</div>
+        <div onclick="openModal('بطاقة التعريف المدرسية')">بطاقة التعريف المدرسية</div>
+        <div onclick="openModal('وثائق واستمارات مختلفة')">وثائق واستمارات مختلفة</div>
+    </div>
+</header>
+
+<!-- ===== المحتوى الرئيسي ===== -->
 <div class="container">
 
-    <label>رابط الملف</label>
-    <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا او قم بمسح QR">
+    <h2 id="selectedTitle">مرحبا بكم في فضاء أولياء التلاميذ 👋</h2>
 
-    <div class="buttons">
-        <button class="save" onclick="saveLink()">💾 حفظ</button>
-        <button class="scan" onclick="startQR()">📷 مسح QR</button>
-        <button class="clear" onclick="clearLink()">🗑️ مسح</button>
-    </div>
+    <p class="welcome-text">
+        هذه المنصة تتيح لكم الاطلاع على مختلف الوثائق والملفات المدرسية
+        بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.
+        <br><br>
+        الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
+    </p>
 
-    <div id="qr-reader"></div>
-    <div id="message"></div>
-
-    <div class="viewer" id="viewerContainer">
-        <!-- الملف سيظهر هنا -->
-    </div>
+    <div class="viewer" id="viewerContainer"></div>
 
 </div>
 
-<footer>Copyright © AAbdousoft@gmail.com</footer>
+<!-- ===== نافذة إدخال الرابط (Modal) ===== -->
+<div class="modal" id="linkModal">
+    <div class="modal-content">
+
+        <h3 id="modalTitle">إدخال رابط</h3>
+
+        <input
+            type="text"
+            id="driveLink"
+            placeholder="الصق رابط الملف هنا أو امسح QR"
+        >
+
+        <div class="modal-buttons">
+            <button class="save" onclick="saveLink()">💾 حفظ</button>
+            <button class="scan" onclick="startQR()">📷 مسح QR</button>
+            <button class="close" onclick="closeModal()">✖ إغلاق</button>
+        </div>
+
+        <div id="qr-reader"></div>
+        <div id="message"></div>
+
+    </div>
+</div>
+
+<footer>
+    © Myschoolmanager – AAbdousoft@gmail.com
+</footer>
 
 <script src="app.js"></script>
 
