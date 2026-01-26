@@ -21,31 +21,32 @@
 
         <!-- زر مسح جميع الروابط -->
         <button class="clear-all-btn" onclick="clearAllLinks()" title="مسح جميع الروابط">🗑️</button>
-
-        <!-- زر تغيير اسم المؤسسة -->
-        <button class="change-school-btn" onclick="openSchoolModal()" title="تغيير اسم المؤسسة">🏫</button>
     </div>
 
     <div class="app-title">
         <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
-        <div id="schoolNameDisplay" style="font-size:14px; opacity:0.85; margin-top:2px;"></div>
         <div id="subTitle"></div>
+        <div id="schoolName"></div>
     </div>
 
     <!-- القائمة -->
     <div class="dropdown-menu" id="dropdownMenu">
-        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 سجل الغيابات والمراسلات</div>
-        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 استقبال الأولياء</div>
-        <div onclick="openModal('جدول الفروض والاختبارات')">📝 الفروض والاختبارات</div>
-        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 جدول التوقيت</div>
-        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 بطاقة التعريف</div>
-        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 وثائق مختلفة</div>
+        <div onclick="openItem('سجل الغيابات والمراسلات الإدارية')">📋 سجل الغيابات والمراسلات</div>
+        <div onclick="openItem('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 استقبال الأولياء</div>
+        <div onclick="openItem('جدول الفروض والاختبارات')">📝 الفروض والاختبارات</div>
+        <div onclick="openItem('جدول التوقيت الأسبوعي للدراسة')">🕒 جدول التوقيت</div>
+        <div onclick="openItem('بطاقة التعريف المدرسية')">🎫 بطاقة التعريف</div>
+        <div onclick="openItem('وثائق واستمارات مختلفة')">📁 وثائق مختلفة</div>
     </div>
 
 </header>
 
 <div class="container">
-    <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية 👋</h2>
+    <h2 id="selectedTitle">
+        مرحبا بكم في فضاء خدماتنا الرقمية 👋
+        <button id="editLinkBtn" title="تعديل الرابط" onclick="editCurrentLink()" style="display:none; font-size:16px; margin-left:10px;">✎</button>
+    </h2>
+
     <p class="welcome-text">
         يُعتبر فضاء الأولياء منصة رقمية نوعية ووسيلة تكنولوجية فعالة لتعزيز مشاركة أولياء الأمور في العملية التعليمية.<br>
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br>
@@ -53,6 +54,7 @@
     </p>
 
     <div class="viewer" id="viewerContainer"></div>
+
     <div id="downloadContainer" style="display:none; text-align:center; margin-top:10px;">
         <a id="downloadBtn" class="download-btn" target="_blank">⬇ تحميل الملف</a>
     </div>
@@ -76,20 +78,9 @@
     </div>
 </div>
 
-<!-- نافذة إدخال اسم المؤسسة -->
-<div class="modal" id="schoolModal">
-    <div class="modal-content">
-        <h3>أدخل اسم المؤسسة</h3>
-        <input type="text" id="schoolInput" placeholder="اسم المؤسسة">
-        <div class="modal-buttons">
-            <button class="save" onclick="saveSchool()">💾 حفظ</button>
-        </div>
-    </div>
-</div>
-
 <footer class="app-footer">
     <div class="footer-marquee">
-       Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026 ©
+        © Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026
     </div>
 </footer>
 
