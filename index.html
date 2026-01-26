@@ -27,8 +27,8 @@
 
     <div class="app-title">
         <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
+        <div id="schoolName" style="font-size:14px; opacity:0.8;"></div>
         <div id="subTitle"></div>
-        <div id="schoolName">🏫 المؤسسة التعليمية</div>
     </div>
 
     <!-- القائمة -->
@@ -50,9 +50,7 @@
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
     </p>
-
     <div class="viewer" id="viewerContainer"></div>
-
     <div id="downloadContainer" style="display:none; text-align:center; margin-top:10px;">
         <a id="downloadBtn" class="download-btn" target="_blank">
             ⬇ تحميل الملف
@@ -64,6 +62,7 @@
 <div class="modal" id="linkModal">
     <div class="modal-content">
         <h3 id="modalTitle"></h3>
+
         <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسح QR">
 
         <div class="modal-buttons">
@@ -77,20 +76,20 @@
     </div>
 </div>
 
-<!-- نافذة اختيار المؤسسة -->
+<!-- نافذة إدخال اسم المؤسسة -->
 <div class="modal" id="schoolModal">
     <div class="modal-content">
-        <h3>اختر المؤسسة التعليمية</h3>
-        <select id="schoolSelect" style="width:100%; padding:8px; margin-top:10px;"></select>
-        <div style="margin-top:15px; text-align:right;">
-            <button onclick="saveSchool()" class="save">💾 حفظ</button>
+        <h3>الرجاء إدخال اسم المؤسسة</h3>
+        <input type="text" id="schoolInput" placeholder="اسم المؤسسة">
+        <div class="modal-buttons">
+            <button class="save" onclick="saveSchoolName()">💾 حفظ</button>
         </div>
     </div>
 </div>
 
 <footer class="app-footer">
     <div class="footer-marquee">
-        © Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026
+        Myschoolmanager – aabdousoft@gmail.com | 2010 - 2026 ©
     </div>
 </footer>
 
