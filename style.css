@@ -25,6 +25,7 @@ body {
     position: relative;
     display: flex;
     align-items: flex-start;
+    flex-direction: row; /* الزر على اليمين */
 }
 
 .menu-btn {
@@ -38,8 +39,8 @@ body {
 /* القائمة المنسدلة تظهر أسفل الزر بالكامل */
 .dropdown-menu {
     position: absolute;
-    top: 40px;  /* أسفل الزر */
-    left: 0;    /* تحت الزر مباشرة */
+    top: 40px;  /* أسفل الزر مباشرة */
+    right: 0;   /* محاذاة القائمة للزر على اليمين */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -59,18 +60,14 @@ body {
     gap: 8px;
 }
 
-.dropdown-menu div:last-child {
-    border-bottom: none;
-}
+.dropdown-menu div:last-child { border-bottom: none; }
 
 .dropdown-menu div.disabled {
     opacity: 0.5;
     pointer-events: none;
 }
 
-.dropdown-menu div:hover:not(.disabled) {
-    background: #f0f4ff;
-}
+.dropdown-menu div:hover:not(.disabled) { background: #f0f4ff; }
 
 /* الحاوية الرئيسية */
 .container {
@@ -82,30 +79,14 @@ body {
     padding: 20px;
 }
 
-.container h2 {
-    margin-top: 0;
-    color: #3f51b5;
-}
-
-.welcome-text {
-    font-size: 15px;
-    line-height: 1.7;
-    color: #555;
-}
+.container h2 { margin-top: 0; color: #3f51b5; }
+.welcome-text { font-size: 15px; line-height: 1.7; color: #555; }
 
 /* عارض الملفات */
-.viewer {
-    margin-top: 20px;
+.viewer { margin-top: 20px; }
+.viewer iframe, .viewer img, .viewer pre {
+    width: 100%; border-radius: 8px; border: 1px solid #ddd;
 }
-
-.viewer iframe,
-.viewer img,
-.viewer pre {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
 .viewer iframe { height: 600px; }
 .viewer img { max-height: 600px; object-fit: contain; }
 .viewer pre { background: #f5f5f5; padding: 15px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
@@ -120,7 +101,6 @@ body {
     align-items: center;
     z-index: 2000;
 }
-
 .modal-content {
     background: #fff;
     border-radius: 10px;
@@ -128,20 +108,10 @@ body {
     width: 90%;
     max-width: 400px;
 }
-
-.modal-content h3 {
-    margin-top: 0;
-    color: #3f51b5;
-    font-size: 16px;
-}
-
+.modal-content h3 { margin-top: 0; color: #3f51b5; font-size: 16px; }
 .modal-content input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
+    width: 100%; padding: 10px; font-size: 14px;
+    border-radius: 6px; border: 1px solid #ccc; margin-bottom: 10px;
 }
 
 /* أزرار المودال */
@@ -163,5 +133,5 @@ footer { text-align: center; font-size: 12px; color: #777; margin: 15px 0; }
 @media (max-width: 600px) {
     .viewer iframe { height: 450px; }
     .viewer img, .viewer pre { max-height: 400px; }
-    .dropdown-menu { left: 0; min-width: 90%; }
+    .dropdown-menu { right: 0; min-width: 90%; }
 }
