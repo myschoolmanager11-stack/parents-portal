@@ -1,114 +1,172 @@
-const viewer = document.getElementById("viewerContainer");
+const input = document.getElementById("driveLink");
+const viewerContainer = document.getElementById("viewerContainer");
 const modal = document.getElementById("linkModal");
 const modalTitle = document.getElementById("modalTitle");
-const input = document.getElementById("driveLink");
 const selectedTitle = document.getElementById("selectedTitle");
-const subTitle = document.getElementById("subTitle");
-const downloadContainer = document.getElementById("downloadContainer");
-const downloadBtn = document.getElementById("downloadBtn");
 const schoolModal = document.getElementById("schoolModal");
-const schoolSelect = document.getElementById("schoolSelect");
-const schoolNameDiv = document.getElementById("schoolName");
+const schoolInput = document.getElementById("schoolInput");
+const schoolNameDisplay = document.getElementById("schoolName");
 
 let currentItemKey = null;
 let qrScanner = null;
-const schoolFileId = "1SuTn8Z20zf8uH_vhRryJsZ_V2pCmSI1x";
 
-/* عند تحميل الصفحة */
+// ================================
+// عند تحميل الصفحة
+// ================================
 window.onload = function () {
-    viewer.innerHTML = "";
-    selectedTitle.textContent = "مرحبا بكم في فضاء خدماتنا الرقمية 👋";
-    subTitle.textContent = "";
-    downloadContainer.style.display = "none";
-
-    const savedSchool = localStorage.getItem("selectedSchool");
+    // عرض اسم المؤسسة من localStorage إن وجد
+    const savedSchool = localStorage.getItem("schoolName");
     if (savedSchool) {
-        schoolNameDiv.textContent = savedSchool;
+        schoolNameDisplay.textContent = savedSchool;
     } else {
-        loadSchoolList();
+        // عرض نافذة اختيار المؤسسة
+        schoolModal.style.display = "flex";
     }
+    viewerContainer.innerHTML = "";
+    document.getElementById("subTitle").textContent = "لم يتم اختيار أي وثيقة";
 };
 
-/* القائمة */
+// ================================
+// حفظ اسم المؤسسة
+// ================================
+function saveSchool() {
+    const name = schoolInput.value.trim();
+    if (!name) {
+        alert("يرجى إدخال اسم المؤسسة");
+        return;
+    }
+    localStorage.setItem("schoolName", name);
+    schoolNameDisplay.textContent = name;
+    schoolModal.style.display = "none";
+}
+
+// ================================
+// القائمة العلوية
+// ================================
 function toggleMenu() {
     const menu = document.getElementById("dropdownMenu");
     menu.classList.toggle("show");
 }
-document.addEventListener("click", function (e) {
-    const menu = document.getElementById("dropdownMenu");
-    const menuBtn = document.querySelector(".menu-btn");
-    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-        menu.classList.remove("show");
-    }
-});
 
-/* فتح نافذة الرابط */
+// ================================
+// فتح نافذة إدخال الرابط
+// ================================
 function openModal(itemName) {
     currentItemKey = "drive_item_" + itemName;
-    modalTitle.textContent = itemName;
+
+    modalTitle.textContent = "إدخال رابط: " + itemName;
     input.value = localStorage.getItem(currentItemKey) || "";
+    document.getElementById("subTitle").textContent = itemName;
     modal.style.display = "flex";
     toggleMenu();
 }
 
-/* إغلاق النافذة */
-function closeModal() { modal.style.display = "none"; stopQR(); }
+// ================================
+// إغلاق النافذة
+// ================================
+function closeModal() {
+    modal.style.display = "none";
+    stopQR();
+}
 
-/* حفظ الرابط */
+// ================================
+// حفظ الرابط
+// ================================
 function saveLink() {
     const link = input.value.trim();
-    if (!link) { showMessage("يرجى إدخال رابط صالح", true); return; }
+    if (!link) {
+        showMessage("يرجى إدخال رابط صالح", true);
+        return;
+    }
     localStorage.setItem(currentItemKey, link);
-    selectedTitle.textContent = modalTitle.textContent;
-    subTitle.textContent = modalTitle.textContent;
+
+    const itemName = currentItemKey.replace("drive_item_", "");
+    selectedTitle.textContent = itemName;
+    document.getElementById("subTitle").textContent = itemName;
     closeModal();
     loadFile(link);
 }
 
-/* مسح جميع الروابط */
-function clearAllLinks() {
-    if (!confirm("هل تريد مسح جميع الروابط المحفوظة؟")) return;
-    Object.keys(localStorage).forEach(key => {
-        if (key.startsWith("drive_item_")) localStorage.removeItem(key);
-    });
-    viewer.innerHTML = "";
-    selectedTitle.textContent = "مرحبا بكم في فضاء خدماتنا الرقمية 👋";
-    subTitle.textContent = "";
-    downloadContainer.style.display = "none";
-}
-
-/* QR Scanner */
+// ================================
+// QR Scanner
+// ================================
 function startQR() {
     const qrDiv = document.getElementById("qr-reader");
     qrDiv.innerHTML = "";
+
     qrScanner = new Html5Qrcode("qr-reader");
-    qrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 },
+    qrScanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            localStorage.setItem(currentItemKey, qrCodeMessage);
-            selectedTitle.textContent = modalTitle.textContent;
-            subTitle.textContent = modalTitle.textContent;
-            stopQR(); closeModal(); loadFile(qrCodeMessage);
+            saveLink();
         }
     );
 }
-function stopQR() { if (qrScanner) { qrScanner.stop().catch(()=>{}); qrScanner = null; } }
 
-/* تحميل الملف */
-function loadFile(link) {
-    viewer.innerHTML = "";
-    downloadContainer.style.display = "none";
-    const fileId = extractFileId(link);
-    if (!fileId) { viewer.innerHTML = "<p>❌ رابط غير صالح</p>"; return; }
-    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
-    const iframe = document.createElement("iframe");
-    iframe.src = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
-    iframe.style.width = "100%"; iframe.style.height = "600px"; iframe.style.border = "none";
-    viewer.appendChild(iframe);
-    downloadBtn.href = downloadUrl; downloadContainer.style.display = "block";
+function stopQR() {
+    if (qrScanner) {
+        qrScanner.stop().catch(() => {});
+        qrScanner = null;
+    }
 }
 
-/* استخراج File ID */
+// ================================
+// تحميل الملف حسب نوعه
+// ================================
+function loadFile(link) {
+    viewerContainer.innerHTML = "";
+    const downloadContainer = document.getElementById("downloadContainer");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    const fileId = extractFileId(link);
+    if (!fileId) {
+        showMessage("رابط الملف الذي أدخلته غير صالح", true);
+        downloadContainer.style.display = "none";
+        return;
+    }
+
+    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
+    const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
+    const ext = extMatch ? extMatch[1].toLowerCase() : "pdf";
+
+    if (["pdf", "doc", "docx", "xls", "xlsx"].includes(ext)) {
+        const iframe = document.createElement("iframe");
+        iframe.src = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
+        viewerContainer.appendChild(iframe);
+        downloadBtn.href = downloadUrl;
+        downloadContainer.style.display = "block";
+    } else if (ext === "txt") {
+        fetch(downloadUrl)
+            .then(r => r.text())
+            .then(txt => {
+                const pre = document.createElement("pre");
+                pre.textContent = txt;
+                viewerContainer.appendChild(pre);
+                downloadBtn.href = downloadUrl;
+                downloadContainer.style.display = "block";
+            })
+            .catch(() => {
+                showMessage("تعذر تحميل الملف النصي", true);
+                downloadContainer.style.display = "none";
+            });
+    } else if (["jpg","jpeg","png","gif"].includes(ext)) {
+        const img = document.createElement("img");
+        img.src = downloadUrl;
+        img.style.maxWidth = "100%";
+        viewerContainer.appendChild(img);
+        downloadBtn.href = downloadUrl;
+        downloadContainer.style.display = "block";
+    } else {
+        showMessage("نوع الملف غير مدعوم", true);
+        downloadContainer.style.display = "none";
+    }
+}
+
+// ================================
+// استخراج File ID
+// ================================
 function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
@@ -117,38 +175,43 @@ function extractFileId(link) {
     return null;
 }
 
-/* الرسائل */
+// ================================
+// الرسائل
+// ================================
 function showMessage(text, isError) {
     const msg = document.getElementById("message");
     if (!msg) return;
+
     msg.textContent = text;
     msg.style.display = "block";
     msg.style.background = isError ? "#ffebee" : "#e8f5e9";
     msg.style.color = isError ? "#c62828" : "#2e7d32";
+    msg.style.border = isError ? "1px solid #ef9a9a" : "1px solid #a5d6a7";
+
     setTimeout(() => { msg.style.display = "none"; }, 3000);
 }
 
-/* ======== المؤسسات ======== */
-function loadSchoolList() {
-    const url = "https://drive.google.com/uc?export=download&id=" + schoolFileId;
-    fetch(url)
-        .then(res => res.text())
-        .then(txt => {
-            const lines = txt.split(/\r?\n/).filter(l => l.trim() !== "");
-            schoolSelect.innerHTML = "";
-            lines.forEach(school => {
-                const opt = document.createElement("option");
-                opt.value = school; opt.textContent = school;
-                schoolSelect.appendChild(opt);
-            });
-            schoolModal.style.display = "flex";
-        })
-        .catch(err => { console.error("تعذر تحميل قائمة المؤسسات:", err); alert("تعذر تحميل قائمة المؤسسات من Google Drive."); });
-}
-function saveSchool() {
-    const selected = schoolSelect.value;
-    if (!selected) return;
-    schoolNameDiv.textContent = selected;
-    localStorage.setItem("selectedSchool", selected);
-    schoolModal.style.display = "none";
+// ================================
+// إغلاق القائمة عند الضغط خارجها
+// ================================
+document.addEventListener("click", function (e) {
+    const menu = document.getElementById("dropdownMenu");
+    const menuBtn = document.querySelector(".menu-btn");
+
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+        menu.classList.remove("show");
+    }
+});
+
+// ================================
+// مسح جميع الروابط
+// ================================
+function clearAllLinks() {
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("drive_item_")) localStorage.removeItem(key);
+    });
+    viewerContainer.innerHTML = "";
+    document.getElementById("selectedTitle").textContent = "مرحبا بكم في فضاء خدماتنا الرقمية 👋";
+    document.getElementById("subTitle").textContent = "لم يتم اختيار أي وثيقة";
+    document.getElementById("downloadContainer").style.display = "none";
 }
