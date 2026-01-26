@@ -12,55 +12,79 @@
 </head>
 <body>
 
+<!-- ===== الشريط العلوي ===== -->
 <header class="top-bar">
-    <div class="app-title">
-        <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
-        <div id="subTitle"></div>
+   <div class="app-title">
+    <div id="mainTitle">ߓ مرحبًا بك في فضاء أولياء التلاميذ</div>
+    <div id="subTitle"></div>
+</div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+   <div class="dropdown-menu" id="dropdownMenu">
+    <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">
+        ߓˠ<span>سجل الغيابات والمراسلات الإدارية</span>
     </div>
 
-    <!-- زر القائمة في أقصى اليسار -->
-    <button class="menu-btn left" onclick="toggleMenu()">☰</button>
-
-    <!-- القائمة المنسدلة مستقلة -->
-    <div class="dropdown-menu" id="dropdownMenu">
-        <div id="clearAllBtn" onclick="clearAllLinks()" class="disabled">🗑️ مسح كل الروابط</div>
-
-        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
-        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
-        <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
-        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
-        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
-        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
+    <div onclick="openModal('جدول استقبال أولياء التلاميذ')">
+        ߑɢ
+ߑʢ
+ߑǠ<span>جدول استقبال أولياء التلاميذ</span>
     </div>
+
+    <div onclick="openModal('جدول الفروض والاختبارات')">
+        ߓݠ<span>جدول الفروض والاختبارات</span>
+    </div>
+
+    <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">
+        ߕҠ<span>جدول التوقيت الأسبوعي للدراسة</span>
+    </div>
+
+    <div onclick="openModal('بطاقة التعريف المدرسية')">
+        ߎˠ<span>بطاقة التعريف المدرسية</span>
+    </div>
+
+    <div onclick="openModal('وثائق واستمارات مختلفة')">
+        ߓ`<span>وثائق واستمارات مختلفة</span>
+    </div>
+</div>
 </header>
 
+<!-- ===== المحتوى الرئيسي ===== -->
 <div class="container">
-    <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية 👋</h2>
 
-    <p class="welcome-text">
+    <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية ߑ˼/h2>
+
+     <p class="welcome-text">
         يُعتبر فضاء الأولياء منصة رقمية نوعية ووسيلة تكنولوجية فعالة لتعزيز مشاركة أولياء الأمور في العملية التعليمية.<br>
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br><br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
     </p>
 
     <div class="viewer" id="viewerContainer"></div>
+
 </div>
 
+<!-- ===== نافذة إدخال الرابط (Modal) ===== -->
 <div class="modal" id="linkModal">
     <div class="modal-content">
+
         <h3 id="modalTitle">إدخال رابط</h3>
 
-        <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسح QR">
+        <input
+            type="text"
+            id="driveLink"
+            placeholder="الصق رابط الملف هنا أو امسح QR"
+        >
 
         <div class="modal-buttons">
-            <button class="save" onclick="saveLink()">💾 حفظ</button>
-            <button class="scan" onclick="startQR()">📷 مسح QR</button>
+            <button class="save" onclick="saveLink()">ߒޠحفظ</button>
+            <button class="scan" onclick="startQR()">ߓנمسح QR</button>
             <button class="close" onclick="closeModal()">✖ إغلاق</button>
-            <button class="clear-current" onclick="clearCurrentLink()" disabled>🗑️ مسح الرابط الحالي</button>
         </div>
 
         <div id="qr-reader"></div>
         <div id="message"></div>
+
     </div>
 </div>
 
@@ -69,5 +93,6 @@
 </footer>
 
 <script src="app.js"></script>
+
 </body>
-</html>
+</html
