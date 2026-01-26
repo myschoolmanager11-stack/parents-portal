@@ -13,6 +13,7 @@ let qrScanner = null;
 window.onload = function () {
     // لا يتم تحميل أي ملف
     viewerContainer.innerHTML = "";
+   document.getElementById("subTitle").textContent = "لم يتم اختيار أي وثيقة"
 };
 
 /* ===============================
@@ -31,7 +32,7 @@ function openModal(itemName) {
 
     modalTitle.textContent = "إدخال رابط: " + itemName;
     input.value = localStorage.getItem(currentItemKey) || "";
-
+    document.getElementById("subTitle").textContent = itemName;
     modal.style.display = "flex";
     toggleMenu();
 }
@@ -58,7 +59,7 @@ function saveLink() {
 
     const itemName = currentItemKey.replace("drive_item_", "");
     selectedTitle.textContent = itemName;
-
+     document.getElementById("subTitle").textContent = itemName;
     closeModal();
     loadFile(link);
 }
@@ -184,4 +185,5 @@ document.addEventListener("click", function (e) {
         menu.classList.remove("show");
     }
 });
+
 
