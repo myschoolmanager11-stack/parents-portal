@@ -174,3 +174,13 @@ function showMessage(text, isError) {
         msg.style.display = "none";
     }, 3000);
 }
+
+// إغلاق القائمة عند الضغط خارجها
+document.addEventListener("click", function (e) {
+    const menu = document.getElementById("dropdownMenu");
+    const menuBtn = document.querySelector(".menu-btn");
+
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+        menu.classList.remove("show");
+    }
+});
