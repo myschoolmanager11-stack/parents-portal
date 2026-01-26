@@ -137,4 +137,75 @@ function loadFile(link) {
         viewerContainer.appendChild(iframe);
         downloadContainer.style.display = "block";
         downloadBtn.href = downloadUrl;
-    } else
+    } else if (ext === "txt") {
+        fetch(downloadUrl)
+            .then(r => r.text())
+            .then(txt => {
+                const pre = document.createElement("pre");
+                pre.textContent = txt;
+                viewerContainer.appendChild(pre);
+                downloadContainer.style.display = "block";
+                downloadBtn.href = downloadUrl;
+            })
+            .catch(() => showMessage("تعذر تحميل الملف النصي", true));
+    } else if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
+        const img = document.createElement("img");
+        img.src = downloadUrl;
+        viewerContainer.appendChild(img);
+        downloadContainer.style.display = "block";
+        downloadBtn.href = downloadUrl;
+    } else {
+        showMessage("نوع الملف غير مدعوم", true);
+    }
+}
+
+/* ===============================
+   استخراج File ID
+=============================== */
+function extractFileId(link) {
+    let match = link.match(/\/file\/d\/([^\/]+)/);
+    if (match) return match[1];
+    match = link.match(/id=([^&]+)/);
+    if (match) return match[1];
+    return null;
+}
+
+/* ===============================
+   الرسائل
+=============================== */
+function showMessage(text, isError) {
+    const msg = document.getElementById("message");
+    msg.textContent = text;
+    msg.style.display = "block";
+    msg.style.background = isError ? "#ffebee" : "#e8f5e9";
+    msg.style.color = isError ? "#c62828" : "#2e7d32";
+    msg.style.border = isError ? "1px solid #ef9a9a" : "1px solid #a5d6a7";
+
+    setTimeout(() => { msg.style.display = "none"; }, 3000);
+}
+
+/* ===============================
+   مسح جميع الروابط
+=============================== */
+function clearAllLinks() {
+    if (!confirm("هل تريد مسح جميع الروابط المحفوظة؟")) return;
+    for (let key in localStorage) {
+        if (key.startsWith("drive_item_")) localStorage.removeItem(key);
+    }
+    viewerContainer.innerHTML = "";
+    selectedTitle.textContent = "";
+    document.getElementById("subTitle").textContent = "";
+    editLinkBtn.style.display = "none";
+    downloadContainer.style.display = "none";
+}
+
+/* ===============================
+   إغلاق القائمة عند الضغط خارجها
+=============================== */
+document.addEventListener("click", function (e) {
+    const menu = document.getElementById("dropdownMenu");
+    const menuBtn = document.querySelector(".menu-btn");
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+        menu.classList.remove("show");
+    }
+});
