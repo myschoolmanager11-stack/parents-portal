@@ -39,7 +39,8 @@ body {
 .dropdown-menu {
     position: absolute;
     top: 55px;
-    left: 10px;
+    right: 10px;   /* نقلها لليسار في واجهة RTL */
+    left: auto;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -233,4 +234,5 @@ footer {
         min-width: auto;
     }
 }
+
 
