@@ -9,18 +9,12 @@ const clearCurrentBtn = document.querySelector(".clear-current");
 let currentItemKey = null;
 let qrScanner = null;
 
-/* ===============================
-   عند تحميل الصفحة
-=============================== */
 window.onload = function () {
     viewerContainer.innerHTML = "";
     document.getElementById("subTitle").textContent = "";
     updateClearAllButton();
 };
 
-/* ===============================
-   القائمة العلوية
-=============================== */
 function toggleMenu() {
     const menu = document.getElementById("dropdownMenu");
     menu.classList.toggle("show");
@@ -31,42 +25,27 @@ function updateClearAllButton() {
     for (let i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i).startsWith("drive_item_")) { hasLinks = true; break; }
     }
-    if (hasLinks) clearAllBtn.classList.remove("disabled");
-    else clearAllBtn.classList.add("disabled");
+    clearAllBtn.classList.toggle("disabled", !hasLinks);
 }
 
-/* ===============================
-   فتح نافذة إدخال الرابط
-=============================== */
 function openModal(itemName) {
     currentItemKey = "drive_item_" + itemName;
     modalTitle.textContent = "إدخال رابط: " + itemName;
     input.value = localStorage.getItem(currentItemKey) || "";
     document.getElementById("subTitle").textContent = "";
     modal.style.display = "flex";
-
-    // تفعيل زر مسح الرابط إذا موجود
     clearCurrentBtn.disabled = !input.value;
-    toggleMenu();
+    document.getElementById("dropdownMenu").classList.remove("show");
 }
 
-/* ===============================
-   إغلاق النافذة
-=============================== */
 function closeModal() {
     modal.style.display = "none";
     stopQR();
 }
 
-/* ===============================
-   حفظ الرابط
-=============================== */
 function saveLink() {
     const link = input.value.trim();
-    if (!link) {
-        showMessage("يرجى إدخال رابط صالح", true);
-        return;
-    }
+    if (!link) { showMessage("يرجى إدخال رابط صالح", true); return; }
     localStorage.setItem(currentItemKey, link);
     selectedTitle.textContent = input.value ? currentItemKey.replace("drive_item_", "") : "";
     document.getElementById("subTitle").textContent = "";
@@ -76,9 +55,6 @@ function saveLink() {
     loadFile(link);
 }
 
-/* ===============================
-   مسح الرابط الحالي في المودال
-=============================== */
 function clearCurrentLink() {
     if (!currentItemKey) return;
     localStorage.removeItem(currentItemKey);
@@ -90,9 +66,6 @@ function clearCurrentLink() {
     updateClearAllButton();
 }
 
-/* ===============================
-   مسح كل الروابط
-=============================== */
 function clearAllLinks() {
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -104,40 +77,28 @@ function clearAllLinks() {
     updateClearAllButton();
 }
 
-/* ===============================
-   QR Scanner
-=============================== */
 function startQR() {
     const qrDiv = document.getElementById("qr-reader");
     qrDiv.innerHTML = "";
-
     qrScanner = new Html5Qrcode("qr-reader");
     qrScanner.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            saveLink(); // حفظ الرابط وعرض الملف مباشرة
+            saveLink();
         }
     );
 }
 
 function stopQR() {
-    if (qrScanner) {
-        qrScanner.stop().catch(() => {});
-        qrScanner = null;
-    }
+    if (qrScanner) { qrScanner.stop().catch(() => {}); qrScanner = null; }
 }
 
-/* ===============================
-   تحميل الملف حسب نوعه
-=============================== */
 function loadFile(link) {
     viewerContainer.innerHTML = "";
-
     const fileId = extractFileId(link);
     if (!fileId) { showMessage("رابط Google Drive غير صالح", true); return; }
-
     const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
     const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
     const ext = extMatch ? extMatch[1].toLowerCase() : "pdf";
@@ -160,9 +121,6 @@ function loadFile(link) {
     } else showMessage("نوع الملف غير مدعوم", true);
 }
 
-/* ===============================
-   استخراج File ID
-=============================== */
 function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
@@ -171,9 +129,6 @@ function extractFileId(link) {
     return null;
 }
 
-/* ===============================
-   الرسائل
-=============================== */
 function showMessage(text, isError) {
     const msg = document.getElementById("message");
     if (!msg) return;
@@ -185,7 +140,6 @@ function showMessage(text, isError) {
     setTimeout(() => { msg.style.display = "none"; }, 3000);
 }
 
-/* إغلاق القائمة عند الضغط خارجها */
 document.addEventListener("click", function (e) {
     const menu = document.getElementById("dropdownMenu");
     const menuBtn = document.querySelector(".menu-btn");
