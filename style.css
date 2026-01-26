@@ -20,27 +20,22 @@ body {
     font-weight: bold;
 }
 
-/* الزر والقائمة */
-.menu-wrapper {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: row; /* الزر على اليمين */
-}
-
+/* زر القائمة */
 .menu-btn {
     background: transparent;
     border: none;
     color: #fff;
     font-size: 22px;
     cursor: pointer;
+    position: relative;
+    z-index: 1001;
 }
 
-/* القائمة المنسدلة تظهر أسفل الزر بالكامل */
+/* القائمة المنسدلة مستقلة أسفل الزر */
 .dropdown-menu {
     position: absolute;
-    top: 40px;  /* أسفل الزر مباشرة */
-    right: 0;   /* محاذاة القائمة للزر على اليمين */
+    top: 50px;      /* أسفل الزر مباشرة */
+    right: 10px;    /* محاذاة للزر على اليمين */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -62,11 +57,7 @@ body {
 
 .dropdown-menu div:last-child { border-bottom: none; }
 
-.dropdown-menu div.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
+.dropdown-menu div.disabled { opacity: 0.5; pointer-events: none; }
 .dropdown-menu div:hover:not(.disabled) { background: #f0f4ff; }
 
 /* الحاوية الرئيسية */
