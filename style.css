@@ -56,6 +56,8 @@ body {
     padding: 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    color: #000;              /* لون النص أسود */
+    font-size: 14px;
 }
 
 .dropdown-menu div:last-child {
@@ -231,3 +233,4 @@ footer {
         min-width: auto;
     }
 }
+
