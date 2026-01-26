@@ -13,27 +13,25 @@
 <body>
 
 <header class="top-bar">
-   <div class="app-title">
-       <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
-       <div id="subTitle"></div>
-   </div>
+    <div class="app-title">
+        <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
+        <div id="subTitle"></div>
+    </div>
 
-   <!-- الزر والقائمة -->
-   <div class="menu-wrapper">
-       <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <!-- زر القائمة -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-       <div class="dropdown-menu" id="dropdownMenu">
-           <!-- زر مسح كل الروابط -->
-           <div id="clearAllBtn" onclick="clearAllLinks()" class="disabled">🗑️ مسح كل الروابط</div>
+    <!-- القائمة المنسدلة مستقلة -->
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div id="clearAllBtn" onclick="clearAllLinks()" class="disabled">🗑️ مسح كل الروابط</div>
 
-           <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
-           <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
-           <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
-           <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
-           <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
-           <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
-       </div>
-   </div>
+        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
+        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
+        <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
+        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
+        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
+        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
+    </div>
 </header>
 
 <div class="container">
@@ -67,7 +65,7 @@
 </div>
 
 <footer>
-    © Myschoolmanager – AAbdousoft@gmail.com
+    © Myschoolmanager 2026
 </footer>
 
 <script src="app.js"></script>
