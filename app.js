@@ -1,69 +1,125 @@
 const input = document.getElementById("driveLink");
 const viewerContainer = document.getElementById("viewerContainer");
-let qrScanner;
+const modal = document.getElementById("linkModal");
+const modalTitle = document.getElementById("modalTitle");
+const selectedTitle = document.getElementById("selectedTitle");
 
-/* تحميل الرابط المحفوظ تلقائيًا */
+let currentItemKey = null;
+let qrScanner = null;
+
+/* ===============================
+   عند تحميل الصفحة
+   =============================== */
 window.onload = function () {
-    const savedLink = localStorage.getItem("drive_link");
-    if (savedLink) {
-        input.value = savedLink;
-        loadFile(savedLink);
-    }
+    // لا يتم تحميل أي ملف
+    viewerContainer.innerHTML = "";
 };
 
-/* حفظ الرابط */
+/* ===============================
+   القائمة العلوية
+   =============================== */
+function toggleMenu() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.classList.toggle("show");
+}
+
+/* ===============================
+   فتح نافذة إدخال الرابط
+   =============================== */
+function openModal(itemName) {
+    currentItemKey = "drive_item_" + itemName;
+
+    modalTitle.textContent = "إدخال رابط: " + itemName;
+    input.value = localStorage.getItem(currentItemKey) || "";
+
+    modal.style.display = "flex";
+    toggleMenu();
+}
+
+/* ===============================
+   إغلاق النافذة
+   =============================== */
+function closeModal() {
+    modal.style.display = "none";
+    stopQR();
+}
+
+/* ===============================
+   حفظ الرابط
+   =============================== */
 function saveLink() {
     const link = input.value.trim();
-    if (!link) return showMessage("يرجى إدخال رابط من Google Drive", true);
+    if (!link) {
+        showMessage("يرجى إدخال رابط صالح", true);
+        return;
+    }
 
-    localStorage.setItem("drive_link", link);
+    localStorage.setItem(currentItemKey, link);
+
+    const itemName = currentItemKey.replace("drive_item_", "");
+    selectedTitle.textContent = itemName;
+
+    closeModal();
     loadFile(link);
 }
 
-/* مسح الرابط */
-function clearLink() {
-    localStorage.removeItem("drive_link");
-    input.value = "";
-    viewerContainer.innerHTML = "";
-    showMessage("تم مسح الرابط بنجاح", false);
-}
-
-/* تشغيل QR */
+/* ===============================
+   QR Scanner
+   =============================== */
 function startQR() {
-    document.getElementById("qr-reader").innerHTML = "";
+    const qrDiv = document.getElementById("qr-reader");
+    qrDiv.innerHTML = "";
 
     qrScanner = new Html5Qrcode("qr-reader");
     qrScanner.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
+        { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            localStorage.setItem("drive_link", qrCodeMessage);
+            localStorage.setItem(currentItemKey, qrCodeMessage);
+
+            const itemName = currentItemKey.replace("drive_item_", "");
+            selectedTitle.textContent = itemName;
+
+            stopQR();
+            closeModal();
             loadFile(qrCodeMessage);
-            qrScanner.stop();
-            showMessage("تم قراءة الرابط من QR بنجاح", false);
-        },
-        errorMessage => {}
+        }
     );
 }
 
-/* تحميل الملف وعرضه حسب نوعه */
+function stopQR() {
+    if (qrScanner) {
+        qrScanner.stop().catch(() => {});
+        qrScanner = null;
+    }
+}
+
+/* ===============================
+   تحميل الملف حسب نوعه
+   =============================== */
 function loadFile(link) {
-    const fileId = extractFileId(link);
-    if (!fileId) return showMessage("الرابط غير صالح", true);
-
-    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
-
-    // تحديد نوع الملف من الرابط
-    const extensionMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
-    const ext = extensionMatch ? extensionMatch[1].toLowerCase() : "pdf";
-
     viewerContainer.innerHTML = "";
 
-    if (ext === "pdf" || ext === "docx" || ext === "doc" || ext === "xlsx" || ext === "xls") {
+    const fileId = extractFileId(link);
+    if (!fileId) {
+        showMessage("رابط Google Drive غير صالح", true);
+        return;
+    }
+
+    const downloadUrl =
+        "https://drive.google.com/uc?export=download&id=" + fileId;
+
+    const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
+    const ext = extMatch ? extMatch[1].toLowerCase() : "pdf";
+
+    if (["pdf", "doc", "docx", "xls", "xlsx"].includes(ext)) {
         const iframe = document.createElement("iframe");
-        iframe.src = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
+        iframe.src =
+            "https://docs.google.com/viewer?embedded=true&url=" +
+            encodeURIComponent(downloadUrl);
         viewerContainer.appendChild(iframe);
+
     } else if (ext === "txt") {
         fetch(downloadUrl)
             .then(r => r.text())
@@ -72,40 +128,49 @@ function loadFile(link) {
                 pre.textContent = txt;
                 viewerContainer.appendChild(pre);
             })
-            .catch(() => showMessage("فشل تحميل الملف النصي", true));
-    } else if (["jpg","jpeg","png","gif"].includes(ext)) {
+            .catch(() => showMessage("تعذر تحميل الملف النصي", true));
+
+    } else if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
         const img = document.createElement("img");
         img.src = downloadUrl;
+        img.style.maxWidth = "100%";
         viewerContainer.appendChild(img);
+
     } else {
         showMessage("نوع الملف غير مدعوم", true);
     }
-
-    showMessage("تم تحميل الملف بنجاح", false);
 }
 
-/* استخراج File ID */
+/* ===============================
+   استخراج File ID
+   =============================== */
 function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
+
     match = link.match(/id=([^&]+)/);
     if (match) return match[1];
+
     return null;
 }
 
-/* عرض رسالة */
+/* ===============================
+   الرسائل
+   =============================== */
 function showMessage(text, isError) {
     const msg = document.getElementById("message");
     if (!msg) return;
-    msg.style.display = "block";
+
     msg.textContent = text;
-    if (isError) {
-        msg.style.background = "#ffebee";
-        msg.style.color = "#c62828";
-        msg.style.border = "1px solid #ef9a9a";
-    } else {
-        msg.style.background = "#e8f5e9";
-        msg.style.color = "#2e7d32";
-        msg.style.border = "1px solid #a5d6a7";
-    }
+    msg.style.display = "block";
+
+    msg.style.background = isError ? "#ffebee" : "#e8f5e9";
+    msg.style.color = isError ? "#c62828" : "#2e7d32";
+    msg.style.border = isError
+        ? "1px solid #ef9a9a"
+        : "1px solid #a5d6a7";
+
+    setTimeout(() => {
+        msg.style.display = "none";
+    }, 3000);
 }
