@@ -86,7 +86,7 @@ function startQR() {
         { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            saveLink();
+            saveLink(); // يغلق المودال مباشرة ويعرض الملف
         }
     );
 }
