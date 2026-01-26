@@ -21,9 +21,9 @@ body {
     font-weight: bold;
 }
 
-/* زر القائمة في أقصى اليسار */
+/* زر القائمة على أقصى اليسار */
 .menu-btn.left {
-    position: absolute;
+    position: fixed;
     left: 10px;
     top: 12px;
     z-index: 1001;
@@ -34,11 +34,11 @@ body {
     cursor: pointer;
 }
 
-/* القائمة المنسدلة مستقلة أسفل الزر */
+/* القائمة المنسدلة أسفل الزر */
 .dropdown-menu {
-    position: absolute;
-    top: 50px;  /* أسفل الزر مباشرة */
-    left: 10px; /* محاذاة للزر على اليسار */
+    position: fixed;
+    top: 50px;
+    left: 10px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -112,19 +112,4 @@ body {
 .modal-buttons button { flex: 1; padding: 10px; font-size: 14px; border: none; border-radius: 6px; cursor: pointer; color: #fff; }
 .save { background: #4caf50; }
 .scan { background: #ff9800; }
-.close { background: #9e9e9e; }
-.clear-current { background: #f44336; }
-
-/* QR + الرسائل */
-#qr-reader { margin-top: 15px; }
-#message { margin-top: 10px; padding: 8px; display: none; border-radius: 6px; font-size: 14px; }
-
-/* التذييل */
-footer { text-align: center; font-size: 12px; color: #777; margin: 15px 0; }
-
-/* الهاتف */
-@media (max-width: 600px) {
-    .viewer iframe { height: 450px; }
-    .viewer img, .viewer pre { max-height: 400px; }
-    .dropdown-menu { left: 0; min-width: 90%; }
-}
+.close { background: #9
