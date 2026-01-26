@@ -9,16 +9,15 @@ let qrScanner = null;
 
 /* ===============================
    عند تحميل الصفحة
-   =============================== */
+=============================== */
 window.onload = function () {
-    // لا يتم تحميل أي ملف
     viewerContainer.innerHTML = "";
-   document.getElementById("subTitle").textContent = "لم يتم اختيار أي وثيقة"
+    document.getElementById("subTitle").textContent = "لم يتم اختيار أي وثيقة";
 };
 
 /* ===============================
    القائمة العلوية
-   =============================== */
+=============================== */
 function toggleMenu() {
     const menu = document.getElementById("dropdownMenu");
     menu.classList.toggle("show");
@@ -26,12 +25,14 @@ function toggleMenu() {
 
 /* ===============================
    فتح نافذة إدخال الرابط
-   =============================== */
+=============================== */
 function openModal(itemName) {
     currentItemKey = "drive_item_" + itemName;
-
     modalTitle.textContent = "إدخال رابط: " + itemName;
-    input.value = localStorage.getItem(currentItemKey) || "";
+
+    let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
+    input.value = allLinks[currentItemKey] || "";
+
     document.getElementById("subTitle").textContent = itemName;
     modal.style.display = "flex";
     toggleMenu();
@@ -39,7 +40,7 @@ function openModal(itemName) {
 
 /* ===============================
    إغلاق النافذة
-   =============================== */
+=============================== */
 function closeModal() {
     modal.style.display = "none";
     stopQR();
@@ -47,7 +48,7 @@ function closeModal() {
 
 /* ===============================
    حفظ الرابط
-   =============================== */
+=============================== */
 function saveLink() {
     const link = input.value.trim();
     if (!link) {
@@ -55,18 +56,21 @@ function saveLink() {
         return;
     }
 
-    localStorage.setItem(currentItemKey, link);
+    let allLinks = JSON.parse(localStorage.getItem("drive_links") || "{}");
+    allLinks[currentItemKey] = link;
+    localStorage.setItem("drive_links", JSON.stringify(allLinks));
 
     const itemName = currentItemKey.replace("drive_item_", "");
     selectedTitle.textContent = itemName;
-     document.getElementById("subTitle").textContent = itemName;
+    document.getElementById("subTitle").textContent = itemName;
+
     closeModal();
     loadFile(link);
 }
 
 /* ===============================
    QR Scanner
-   =============================== */
+=============================== */
 function startQR() {
     const qrDiv = document.getElementById("qr-reader");
     qrDiv.innerHTML = "";
@@ -77,14 +81,7 @@ function startQR() {
         { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            localStorage.setItem(currentItemKey, qrCodeMessage);
-
-            const itemName = currentItemKey.replace("drive_item_", "");
-            selectedTitle.textContent = itemName;
-
-            stopQR();
-            closeModal();
-            loadFile(qrCodeMessage);
+            showMessage("تم مسح QR بنجاح! 📷", false);
         }
     );
 }
@@ -98,7 +95,7 @@ function stopQR() {
 
 /* ===============================
    تحميل الملف حسب نوعه
-   =============================== */
+=============================== */
 function loadFile(link) {
     viewerContainer.innerHTML = "";
 
@@ -108,20 +105,16 @@ function loadFile(link) {
         return;
     }
 
-    const downloadUrl =
-        "https://drive.google.com/uc?export=download&id=" + fileId;
-
-    const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
+    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
+    const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif|ppt|pptx|csv)/i);
     const ext = extMatch ? extMatch[1].toLowerCase() : "pdf";
 
-    if (["pdf", "doc", "docx", "xls", "xlsx"].includes(ext)) {
+    if (["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "csv"].includes(ext)) {
         const iframe = document.createElement("iframe");
-        iframe.src =
-            "https://docs.google.com/viewer?embedded=true&url=" +
-            encodeURIComponent(downloadUrl);
+        iframe.src = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
         viewerContainer.appendChild(iframe);
-
-    } else if (ext === "txt") {
+    } 
+    else if (ext === "txt") {
         fetch(downloadUrl)
             .then(r => r.text())
             .then(txt => {
@@ -130,21 +123,42 @@ function loadFile(link) {
                 viewerContainer.appendChild(pre);
             })
             .catch(() => showMessage("تعذر تحميل الملف النصي", true));
-
-    } else if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
+    } 
+    else if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
         const img = document.createElement("img");
         img.src = downloadUrl;
         img.style.maxWidth = "100%";
         viewerContainer.appendChild(img);
-
-    } else {
+    } 
+    else {
         showMessage("نوع الملف غير مدعوم", true);
     }
+
+    addDownloadButton(downloadUrl);
+}
+
+/* ===============================
+   زر تحميل الملف
+=============================== */
+function addDownloadButton(downloadUrl) {
+    const btn = document.createElement("button");
+    btn.textContent = "⬇️ تنزيل الملف";
+    btn.style.marginTop = "10px";
+    btn.style.padding = "10px 15px";
+    btn.style.fontSize = "14px";
+    btn.style.border = "none";
+    btn.style.borderRadius = "6px";
+    btn.style.background = "#4caf50";
+    btn.style.color = "#fff";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = () => window.open(downloadUrl, "_blank");
+    viewerContainer.appendChild(btn);
 }
 
 /* ===============================
    استخراج File ID
-   =============================== */
+=============================== */
 function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
@@ -157,7 +171,7 @@ function extractFileId(link) {
 
 /* ===============================
    الرسائل
-   =============================== */
+=============================== */
 function showMessage(text, isError) {
     const msg = document.getElementById("message");
     if (!msg) return;
@@ -167,9 +181,7 @@ function showMessage(text, isError) {
 
     msg.style.background = isError ? "#ffebee" : "#e8f5e9";
     msg.style.color = isError ? "#c62828" : "#2e7d32";
-    msg.style.border = isError
-        ? "1px solid #ef9a9a"
-        : "1px solid #a5d6a7";
+    msg.style.border = isError ? "1px solid #ef9a9a" : "1px solid #a5d6a7";
 
     setTimeout(() => {
         msg.style.display = "none";
@@ -185,5 +197,3 @@ document.addEventListener("click", function (e) {
         menu.classList.remove("show");
     }
 });
-
-
