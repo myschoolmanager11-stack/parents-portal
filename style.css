@@ -1,23 +1,23 @@
 body {
     margin: 0;
-    font-family: Segoe UI, Tahoma;
-    direction: rtl;
+    font-family: "Segoe UI", Tahoma, Arial;
     background: #f4f6fb;
+    direction: rtl;
 }
 
 /* الشريط العلوي */
 .top-bar {
     background: #3f51b5;
-    color: white;
-    padding: 10px;
+    color: #fff;
+    padding: 12px;
     position: relative;
 }
 
-/* أزرار اليسار */
-.left-buttons {
+/* الأزرار في اليمين */
+.right-buttons {
     position: absolute;
-    left: 10px;
-    top: 8px;
+    right: 10px;
+    top: 10px;
     display: flex;
     gap: 8px;
 }
@@ -26,25 +26,31 @@ body {
 .clear-all-btn {
     background: transparent;
     border: none;
-    color: white;
+    color: #fff;
     font-size: 22px;
     cursor: pointer;
+}
+
+/* عنوان التطبيق */
+.app-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* القائمة */
 .dropdown-menu {
     position: absolute;
-    top: 50px;
-    left: 10px;
-    background: white;
+    top: 55px;
+    right: 10px;
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     display: none;
-    min-width: 230px;
+    min-width: 260px;
     z-index: 1000;
 }
 
-/* ⭐ الحل النهائي */
 .dropdown-menu.show {
     display: block;
 }
@@ -53,37 +59,94 @@ body {
     padding: 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    color: #000;
+    font-size: 14px;
 }
 
 .dropdown-menu div:hover {
     background: #f0f4ff;
 }
 
+.dropdown-menu div:last-child {
+    border-bottom: none;
+}
+
 /* المحتوى */
 .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 10px;
     padding: 20px;
+}
+
+.viewer iframe,
+.viewer img,
+.viewer pre {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
 .viewer iframe {
-    width: 100%;
     height: 600px;
-    border: none;
 }
 
-/* المودال */
+/* نافذة المودال */
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.5);
+    background: rgba(0,0,0,0.5);
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 2000;
 }
 
 .modal-content {
-    background: white;
+    background: #fff;
+    border-radius: 10px;
     padding: 20px;
     width: 90%;
     max-width: 400px;
-    border-radius: 8px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* أزرار المودال */
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.save { background: #4caf50; }
+.scan { background: #ff9800; }
+.close { background: #9e9e9e; }
+
+/* الهاتف */
+@media (max-width: 600px) {
+    .dropdown-menu {
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+    }
+
+    .viewer iframe {
+        height: 450px;
+    }
 }
