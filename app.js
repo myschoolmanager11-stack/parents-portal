@@ -1,70 +1,39 @@
-/* ===============================
-   عناصر الصفحة
-================================ */
-const viewer = document.getElementById("viewerContainer");
+const input = document.getElementById("driveLink");
+const viewerContainer = document.getElementById("viewerContainer");
 const modal = document.getElementById("linkModal");
 const modalTitle = document.getElementById("modalTitle");
-const input = document.getElementById("driveLink");
 const selectedTitle = document.getElementById("selectedTitle");
-const subTitle = document.getElementById("subTitle");
-
-const downloadContainer = document.getElementById("downloadContainer");
-const downloadBtn = document.getElementById("downloadBtn");
 
 let currentItemKey = null;
 let qrScanner = null;
 
-/* ===============================
-   عند تحميل الصفحة
-================================ */
+/* تحميل الصفحة */
 window.onload = function () {
-    viewer.innerHTML = "";
-    selectedTitle.textContent = "مرحبا بكم في فضاء خدماتنا الرقمية 👋";
-    subTitle.textContent = "";
-    downloadContainer.style.display = "none";
+    viewerContainer.innerHTML = "";
 };
 
-/* ===============================
-   القائمة
-================================ */
+/* القائمة */
 function toggleMenu() {
     const menu = document.getElementById("dropdownMenu");
     menu.classList.toggle("show");
 }
 
-document.addEventListener("click", function (e) {
-    const menu = document.getElementById("dropdownMenu");
-    const menuBtn = document.querySelector(".menu-btn");
-
-    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-        menu.classList.remove("show");
-    }
-});
-
-/* ===============================
-   فتح نافذة الرابط
-================================ */
+/* فتح المودال */
 function openModal(itemName) {
     currentItemKey = "drive_item_" + itemName;
-
-    modalTitle.textContent = itemName;
+    modalTitle.textContent = "إدخال رابط: " + itemName;
     input.value = localStorage.getItem(currentItemKey) || "";
-
     modal.style.display = "flex";
-    toggleMenu();
+    document.getElementById("dropdownMenu").classList.remove("show");
 }
 
-/* ===============================
-   إغلاق النافذة
-================================ */
+/* إغلاق المودال */
 function closeModal() {
     modal.style.display = "none";
     stopQR();
 }
 
-/* ===============================
-   حفظ الرابط
-================================ */
+/* حفظ الرابط */
 function saveLink() {
     const link = input.value.trim();
     if (!link) {
@@ -73,35 +42,12 @@ function saveLink() {
     }
 
     localStorage.setItem(currentItemKey, link);
-
-    selectedTitle.textContent = modalTitle.textContent;
-    subTitle.textContent = modalTitle.textContent;
-
+    selectedTitle.textContent = currentItemKey.replace("drive_item_", "");
     closeModal();
     loadFile(link);
 }
 
-/* ===============================
-   مسح جميع الروابط
-================================ */
-function clearAllLinks() {
-    if (!confirm("هل تريد مسح جميع الروابط المحفوظة؟")) return;
-
-    Object.keys(localStorage).forEach(key => {
-        if (key.startsWith("drive_item_")) {
-            localStorage.removeItem(key);
-        }
-    });
-
-    viewer.innerHTML = "";
-    selectedTitle.textContent = "مرحبا بكم في فضاء خدماتنا الرقمية 👋";
-    subTitle.textContent = "";
-    downloadContainer.style.display = "none";
-}
-
-/* ===============================
-   QR Scanner
-================================ */
+/* QR */
 function startQR() {
     const qrDiv = document.getElementById("qr-reader");
     qrDiv.innerHTML = "";
@@ -112,14 +58,7 @@ function startQR() {
         { fps: 10, qrbox: 220 },
         qrCodeMessage => {
             input.value = qrCodeMessage;
-            localStorage.setItem(currentItemKey, qrCodeMessage);
-
-            selectedTitle.textContent = modalTitle.textContent;
-            subTitle.textContent = modalTitle.textContent;
-
-            stopQR();
-            closeModal();
-            loadFile(qrCodeMessage);
+            saveLink();
         }
     );
 }
@@ -131,16 +70,13 @@ function stopQR() {
     }
 }
 
-/* ===============================
-   تحميل ومعاينة الملف
-================================ */
+/* تحميل الملف */
 function loadFile(link) {
-    viewer.innerHTML = "";
-    downloadContainer.style.display = "none";
+    viewerContainer.innerHTML = "";
 
     const fileId = extractFileId(link);
     if (!fileId) {
-        viewer.innerHTML = "<p>❌ رابط غير صالح</p>";
+        showMessage("رابط Google Drive غير صالح", true);
         return;
     }
 
@@ -156,15 +92,10 @@ function loadFile(link) {
     iframe.style.height = "600px";
     iframe.style.border = "none";
 
-    viewer.appendChild(iframe);
-
-    downloadBtn.href = downloadUrl;
-    downloadContainer.style.display = "block";
+    viewerContainer.appendChild(iframe);
 }
 
-/* ===============================
-   استخراج File ID
-================================ */
+/* استخراج File ID */
 function extractFileId(link) {
     let match = link.match(/\/file\/d\/([^\/]+)/);
     if (match) return match[1];
@@ -175,20 +106,38 @@ function extractFileId(link) {
     return null;
 }
 
-/* ===============================
-   الرسائل
-================================ */
+/* الرسائل */
 function showMessage(text, isError) {
     const msg = document.getElementById("message");
     if (!msg) return;
 
     msg.textContent = text;
     msg.style.display = "block";
-
     msg.style.background = isError ? "#ffebee" : "#e8f5e9";
     msg.style.color = isError ? "#c62828" : "#2e7d32";
 
     setTimeout(() => {
         msg.style.display = "none";
     }, 3000);
+}
+
+/* إغلاق القائمة عند النقر خارجها */
+document.addEventListener("click", function (e) {
+    const menu = document.getElementById("dropdownMenu");
+    const btn = document.querySelector(".menu-btn");
+
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove("show");
+    }
+});
+
+/* مسح جميع الروابط */
+function clearAllLinks() {
+    Object.keys(localStorage).forEach(k => {
+        if (k.startsWith("drive_item_")) {
+            localStorage.removeItem(k);
+        }
+    });
+    viewerContainer.innerHTML = "";
+    selectedTitle.textContent = "تم مسح جميع الروابط";
 }
