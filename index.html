@@ -14,20 +14,25 @@
 
 <!-- ===== الشريط العلوي ===== -->
 <header class="top-bar">
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- حاوية الزر والقائمة -->
+    <div class="menu-wrapper">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <button class="clear-all" onclick="clearAllLinks()">🗑️ مسح كل الروابط</button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
+            <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
+            <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
+            <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
+            <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
+            <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
+        </div>
+    </div>
 
     <div class="app-title">
         <div id="mainTitle">📂 مرحبًا بك في فضاء أولياء التلاميذ</div>
         <div id="subTitle"></div>
-    </div>
-
-    <div class="dropdown-menu" id="dropdownMenu">
-        <div onclick="openModal('سجل الغيابات والمراسلات الإدارية')">📋 <span>سجل الغيابات والمراسلات الإدارية</span></div>
-        <div onclick="openModal('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 <span>جدول استقبال أولياء التلاميذ</span></div>
-        <div onclick="openModal('جدول الفروض والاختبارات')">📝 <span>جدول الفروض والاختبارات</span></div>
-        <div onclick="openModal('جدول التوقيت الأسبوعي للدراسة')">🕒 <span>جدول التوقيت الأسبوعي للدراسة</span></div>
-        <div onclick="openModal('بطاقة التعريف المدرسية')">🎫 <span>بطاقة التعريف المدرسية</span></div>
-        <div onclick="openModal('وثائق واستمارات مختلفة')">📁 <span>وثائق واستمارات مختلفة</span></div>
     </div>
 </header>
 
@@ -57,6 +62,7 @@
         <div class="modal-buttons">
             <button class="save" onclick="saveLink()">💾 حفظ</button>
             <button class="scan" onclick="startQR()">📷 مسح QR</button>
+            <button class="clear-current" onclick="clearCurrentLink()">🗑️ مسح الرابط الحالي</button>
             <button class="close" onclick="closeModal()">✖ إغلاق</button>
         </div>
 
