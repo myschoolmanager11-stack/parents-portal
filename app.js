@@ -1,41 +1,22 @@
-const input = document.getElementById("driveLink");
-const viewerContainer = document.getElementById("viewerContainer");
+const menu = document.getElementById("dropdownMenu");
 const modal = document.getElementById("linkModal");
-const modalTitle = document.getElementById("modalTitle");
-const selectedTitle = document.getElementById("selectedTitle");
-const clearAllBtn = document.getElementById("clearAllBtn");
-const clearCurrentBtn = document.querySelector(".clear-current");
+const input = document.getElementById("driveLink");
+const viewer = document.getElementById("viewerContainer");
+const title = document.getElementById("selectedTitle");
 
-let currentItemKey = null;
+let currentKey = "";
 let qrScanner = null;
 
-window.onload = function () {
-    viewerContainer.innerHTML = "";
-    document.getElementById("subTitle").textContent = "";
-    updateClearAllButton();
-};
-
 function toggleMenu() {
-    const menu = document.getElementById("dropdownMenu");
     menu.classList.toggle("show");
 }
 
-function updateClearAllButton() {
-    let hasLinks = false;
-    for (let i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i).startsWith("drive_item_")) { hasLinks = true; break; }
-    }
-    clearAllBtn.classList.toggle("disabled", !hasLinks);
-}
-
-function openModal(itemName) {
-    currentItemKey = "drive_item_" + itemName;
-    modalTitle.textContent = "إدخال رابط: " + itemName;
-    input.value = localStorage.getItem(currentItemKey) || "";
-    document.getElementById("subTitle").textContent = "";
+function openModal(name) {
+    currentKey = "drive_" + name;
+    document.getElementById("modalTitle").textContent = name;
+    input.value = localStorage.getItem(currentKey) || "";
     modal.style.display = "flex";
-    clearCurrentBtn.disabled = !input.value;
-    document.getElementById("dropdownMenu").classList.remove("show");
+    menu.classList.remove("show");
 }
 
 function closeModal() {
@@ -44,104 +25,43 @@ function closeModal() {
 }
 
 function saveLink() {
-    const link = input.value.trim();
-    if (!link) { showMessage("يرجى إدخال رابط صالح", true); return; }
-    localStorage.setItem(currentItemKey, link);
-    selectedTitle.textContent = input.value ? currentItemKey.replace("drive_item_", "") : "";
-    document.getElementById("subTitle").textContent = "";
-    clearCurrentBtn.disabled = false;
-    updateClearAllButton();
+    if (!input.value) return;
+    localStorage.setItem(currentKey, input.value);
+    loadFile(input.value);
     closeModal();
-    loadFile(link);
-}
-
-function clearCurrentLink() {
-    if (!currentItemKey) return;
-    localStorage.removeItem(currentItemKey);
-    input.value = "";
-    clearCurrentBtn.disabled = true;
-    selectedTitle.textContent = "";
-    document.getElementById("subTitle").textContent = "";
-    viewerContainer.innerHTML = "";
-    updateClearAllButton();
 }
 
 function clearAllLinks() {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith("drive_item_")) localStorage.removeItem(key);
-    }
-    viewerContainer.innerHTML = "";
-    selectedTitle.textContent = "";
-    document.getElementById("subTitle").textContent = "";
-    updateClearAllButton();
+    Object.keys(localStorage).forEach(k => {
+        if (k.startsWith("drive_")) localStorage.removeItem(k);
+    });
+    viewer.innerHTML = "";
+    title.textContent = "تم مسح جميع الروابط";
 }
 
 function startQR() {
-    const qrDiv = document.getElementById("qr-reader");
-    qrDiv.innerHTML = "";
+    const qr = document.getElementById("qr-reader");
+    qr.innerHTML = "";
     qrScanner = new Html5Qrcode("qr-reader");
-    qrScanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 220 },
-        qrCodeMessage => {
-            input.value = qrCodeMessage;
-            saveLink(); // يغلق المودال مباشرة ويعرض الملف
-        }
-    );
+    qrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 }, txt => {
+        input.value = txt;
+        saveLink();
+    });
 }
 
 function stopQR() {
-    if (qrScanner) { qrScanner.stop().catch(() => {}); qrScanner = null; }
+    if (qrScanner) {
+        qrScanner.stop().catch(() => {});
+        qrScanner = null;
+    }
 }
 
 function loadFile(link) {
-    viewerContainer.innerHTML = "";
-    const fileId = extractFileId(link);
-    if (!fileId) { showMessage("رابط Google Drive غير صالح", true); return; }
-    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
-    const extMatch = link.match(/\.(pdf|txt|docx|doc|xlsx|xls|jpg|jpeg|png|gif)/i);
-    const ext = extMatch ? extMatch[1].toLowerCase() : "pdf";
-
-    if (["pdf", "doc", "docx", "xls", "xlsx"].includes(ext)) {
-        const iframe = document.createElement("iframe");
-        iframe.src = "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(downloadUrl);
-        viewerContainer.appendChild(iframe);
-    } else if (ext === "txt") {
-        fetch(downloadUrl).then(r => r.text()).then(txt => {
-            const pre = document.createElement("pre");
-            pre.textContent = txt;
-            viewerContainer.appendChild(pre);
-        }).catch(() => showMessage("تعذر تحميل الملف النصي", true));
-    } else if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
-        const img = document.createElement("img");
-        img.src = downloadUrl;
-        img.style.maxWidth = "100%";
-        viewerContainer.appendChild(img);
-    } else showMessage("نوع الملف غير مدعوم", true);
+    viewer.innerHTML = `<iframe src="https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(link)}"></iframe>`;
 }
 
-function extractFileId(link) {
-    let match = link.match(/\/file\/d\/([^\/]+)/);
-    if (match) return match[1];
-    match = link.match(/id=([^&]+)/);
-    if (match) return match[1];
-    return null;
-}
-
-function showMessage(text, isError) {
-    const msg = document.getElementById("message");
-    if (!msg) return;
-    msg.textContent = text;
-    msg.style.display = "block";
-    msg.style.background = isError ? "#ffebee" : "#e8f5e9";
-    msg.style.color = isError ? "#c62828" : "#2e7d32";
-    msg.style.border = isError ? "1px solid #ef9a9a" : "1px solid #a5d6a7";
-    setTimeout(() => { msg.style.display = "none"; }, 3000);
-}
-
-document.addEventListener("click", function (e) {
-    const menu = document.getElementById("dropdownMenu");
-    const menuBtn = document.querySelector(".menu-btn");
-    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) menu.classList.remove("show");
+document.addEventListener("click", e => {
+    if (!menu.contains(e.target) && !e.target.classList.contains("menu-btn")) {
+        menu.classList.remove("show");
+    }
 });
