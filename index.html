@@ -16,11 +16,10 @@
 
     <div class="right-buttons">
         <button class="menu-btn" onclick="toggleMenu()" title="القائمة">☰</button>
-        <button class="clear-all-btn" onclick="clearAllLinks()" title="مسح جميع الروابط">🗑</button>
     </div>
 
     <div class="app-title">
-        <div id="mainTitle">👋 مرحبًا بك في فضائك الرقمي</div>
+        <div id="mainTitle">👋 مرحبًا بك في الفضاء الرقمي</div>
         <div id="subTitle"></div>
     </div>
 
@@ -29,6 +28,12 @@
         <div onclick="handleItemClick('استقبال الأولياء')">👨‍👩‍👧 استقبال الأولياء</div>
         <div onclick="handleItemClick('الفروض والاختبارات')">📝 الفروض والاختبارات</div>
         <div onclick="handleItemClick('جدول التوقيت')">🕒 جدول التوقيت</div>
+
+        <!-- فاصل -->
+        <div class="menu-separator"></div>
+
+        <!-- مسح الكل -->
+        <div class="menu-danger" onclick="clearAllLinks()">🗑 مسح جميع الروابط</div>
     </div>
 
 </header>
@@ -36,13 +41,14 @@
 <div class="container">
     <h2 id="selectedTitle">الفضاء الرقمي لخدمات التربية والتعليم 🌐</h2>
 
-    <p class="welcome-text" id="welcomeText">
+     <p class="welcome-text" id="welcomeText">
         يُعتبر الفضاء الرقمي منصة نوعية ووسيلة تكنولوجية رقمية فعالة لتعزيز التواصل بين الإدارة وأولياء الأمور.<br>
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
     </p>
 
-    <!-- 🔹 شريط أدوات المعاينة -->
+
+    <!-- شريط أدوات المعاينة -->
     <div class="viewer-toolbar" id="viewerToolbar" style="display:none;">
         <button title="تعديل الرابط" onclick="editCurrentLink()">✏️</button>
         <button title="تحميل الملف" onclick="downloadCurrentFile()">⬇️</button>
