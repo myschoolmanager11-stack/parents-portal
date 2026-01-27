@@ -1,83 +1,69 @@
 const modal = document.getElementById("linkModal");
-const modalTitle = document.getElementById("modalTitle");
 const input = document.getElementById("driveLink");
 const viewer = document.getElementById("viewerContainer");
-const viewerToolbar = document.getElementById("viewerToolbar");
-const selectedTitle = document.getElementById("selectedTitle");
-const subTitle = document.getElementById("subTitle");
-const messageBox = document.getElementById("message");
+const toolbar = document.getElementById("viewerToolbar");
+const clearAllBtn = document.getElementById("clearAllBtn");
 
 let currentKey = "";
-let qrScanner = null;
 
-/* ===== القائمة ===== */
+/* فحص وجود روابط */
+function hasAnyLinks() {
+    return Object.keys(localStorage).some(k => k.startsWith("drive_"));
+}
+
+function updateClearAllState() {
+    clearAllBtn.classList.toggle("disabled", !hasAnyLinks());
+}
+
+updateClearAllState();
+
+/* القائمة */
 function toggleMenu() {
-    const menu = document.getElementById("dropdownMenu");
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    const m = document.getElementById("dropdownMenu");
+    m.style.display = m.style.display === "block" ? "none" : "block";
 }
 
-/* ===== اختيار عنصر ===== */
+/* عنصر */
 function handleItemClick(name) {
-    document.getElementById("dropdownMenu").style.display = "none";
-
+    toggleMenu();
     currentKey = "drive_" + name;
-    selectedTitle.textContent = name;
-    subTitle.textContent = name;
-
-    const savedLink = localStorage.getItem(currentKey);
-
-    if (savedLink) {
-        loadFile(savedLink);
-    } else {
-        openModal(name);
-    }
+    const link = localStorage.getItem(currentKey);
+    link ? loadFile(link) : openModal(name);
 }
 
-/* ===== نافذة الرابط ===== */
+/* نافذة */
 function openModal(title) {
-    modalTitle.textContent = "إدخال رابط: " + title;
-    input.value = "";
-    messageBox.textContent = "";
-    document.getElementById("qr-reader").innerHTML = "";
     modal.style.display = "flex";
+    input.value = "";
 }
 
 function closeModal() {
-    stopQR();
     modal.style.display = "none";
 }
 
-/* ===== حفظ ===== */
+/* حفظ */
 function saveLink() {
-    const link = input.value.trim();
-    if (!link) {
-        messageBox.textContent = "يرجى إدخال رابط صحيح";
-        return;
-    }
-    localStorage.setItem(currentKey, link);
+    if (!input.value.trim()) return;
+    localStorage.setItem(currentKey, input.value.trim());
     closeModal();
-    loadFile(link);
+    loadFile(input.value.trim());
+    updateClearAllState();
 }
 
-/* ===== عرض الملف ===== */
-function toPreviewLink(link) {
-    const match = link.match(/\/d\/([^/]+)/);
-    if (!match) return link;
-    return `https://drive.google.com/file/d/${match[1]}/preview`;
+/* عرض */
+function toPreview(link) {
+    const m = link.match(/\/d\/([^/]+)/);
+    return m ? `https://drive.google.com/file/d/${m[1]}/preview` : link;
 }
 
 function loadFile(link) {
-    viewer.innerHTML = "";
-    viewerToolbar.style.display = "flex";
-
-    const iframe = document.createElement("iframe");
-    iframe.src = toPreviewLink(link);
-    viewer.appendChild(iframe);
+    viewer.innerHTML = `<iframe src="${toPreview(link)}"></iframe>`;
+    toolbar.style.display = "flex";
 }
 
-/* ===== أزرار المعاينة ===== */
+/* أدوات */
 function editCurrentLink() {
-    openModal("تعديل الرابط");
+    openModal();
     input.value = localStorage.getItem(currentKey) || "";
 }
 
@@ -87,46 +73,19 @@ function downloadCurrentFile() {
 }
 
 function deleteCurrentLink() {
-    if (confirm("هل تريد حذف هذا الرابط؟")) {
-        localStorage.removeItem(currentKey);
-        viewer.innerHTML = "";
-        viewerToolbar.style.display = "none";
-        selectedTitle.textContent = "تم حذف الملف";
-        subTitle.textContent = "";
-    }
+    if (!confirm("هل تريد حذف هذا الرابط؟")) return;
+    localStorage.removeItem(currentKey);
+    viewer.innerHTML = "";
+    toolbar.style.display = "none";
+    updateClearAllState();
 }
 
-/* ===== QR ===== */
-function startQR() {
-    const qrDiv = document.getElementById("qr-reader");
-    qrDiv.innerHTML = "";
-
-    qrScanner = new Html5Qrcode("qr-reader");
-    qrScanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        text => {
-            input.value = text;
-            localStorage.setItem(currentKey, text);
-            stopQR();
-            closeModal();
-            loadFile(text);
-        }
-    );
-}
-
-function stopQR() {
-    if (qrScanner) {
-        qrScanner.stop().catch(() => {});
-        qrScanner = null;
-    }
-}
-
-/* ===== مسح الكل ===== */
+/* مسح الكل بحماية */
 function clearAllLinks() {
-    document.getElementById("dropdownMenu").style.display = "none";
-    if (confirm("⚠️ هل تريد مسح جميع الروابط المحفوظة؟")) {
-        localStorage.clear();
-        location.reload();
-    }
+    if (!confirm("⚠️ تأكيد حذف جميع الروابط؟")) return;
+    const code = prompt("للتأكيد اكتب كلمة: حذف");
+    if (code !== "حذف") return alert("تم إلغاء العملية");
+
+    localStorage.clear();
+    location.reload();
 }
