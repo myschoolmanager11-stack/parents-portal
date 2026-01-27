@@ -1,159 +1,97 @@
 body {
     margin: 0;
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-family: "Segoe UI", Tahoma;
     background: #f2f4ff;
-    direction: rtl;
 }
 
-/* ===== الشريط العلوي ===== */
+/* الشريط */
 .top-bar {
     background: #3f51b5;
     color: white;
-    padding: 10px 12px;
+    padding: 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    position: relative;
+    gap: 10px;
 }
 
 .menu-btn {
     background: transparent;
     border: none;
+    font-size: 24px;
     color: white;
-    font-size: 22px;
     cursor: pointer;
 }
 
-/* ===== العنوان ===== */
-.app-title {
-    text-align: center;
-    flex: 1;
-}
-
-#mainTitle {
-    font-size: 16px;
-    font-weight: 600;
-}
-
-#subTitle {
-    font-size: 12px;
-    opacity: 0.85;
-}
-
-/* ===== القائمة ===== */
+/* القائمة */
 .dropdown-menu {
     position: absolute;
     top: 55px;
     right: 10px;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
     display: none;
-    z-index: 1000;
     min-width: 220px;
+    z-index: 1000;
 }
 
 .dropdown-menu div {
-    padding: 12px 14px;
+    padding: 12px;
     cursor: pointer;
     color: #3f51b5;
-    font-size: 14px;
 }
 
-.dropdown-menu div:hover {
-    background: #f0f4ff;
-}
-
-/* فاصل */
 .menu-separator {
     height: 1px;
-    background: #e0e0e0;
-    margin: 6px 0;
+    background: #ddd;
 }
 
-/* زر خطير */
 .menu-danger {
-    color: #d32f2f !important;
-    font-weight: 600;
+    color: #d32f2f;
+    font-weight: bold;
 }
 
-.menu-danger:hover {
-    background: #fdeaea;
+.menu-danger.disabled {
+    color: #aaa;
+    pointer-events: none;
 }
 
-/* ===== المحتوى ===== */
+/* المحتوى */
 .container {
-    max-width: 900px;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 15px;
 }
 
-/* ===== شريط أدوات المعاينة ===== */
+/* شريط الأدوات */
 .viewer-toolbar {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     justify-content: flex-end;
     margin-bottom: 8px;
 }
 
 .viewer-toolbar button {
-    background: #f0f2ff;
-    border: 1px solid #c5c9ff;
-    border-radius: 6px;
-    padding: 6px 8px;
-    cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #f5f6ff;
 }
 
-.viewer-toolbar button:hover {
-    background: #e3e6ff;
-}
-
-/* ===== العارض ===== */
+/* المعاينة */
 .viewer iframe {
     width: 100%;
-    height: 600px;
-    border: 1px solid #ccc;
+    height: 70vh;
     border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
-/* ===== Modal ===== */
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 420px;
-}
-
-/* ===== Footer ===== */
-.app-footer {
-    background: #3f51b5;
-    color: white;
-    padding: 8px;
-    overflow: hidden;
-    margin-top: 30px;
-}
-
-.footer-marquee {
-    white-space: nowrap;
-    font-size: 13px;
-    animation: move 12s linear infinite;
-}
-
-@keyframes move {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
+/* الهاتف */
+@media (max-width: 600px) {
+    .viewer-toolbar {
+        position: sticky;
+        top: 0;
+        background: white;
+        padding: 6px;
+        z-index: 10;
+    }
 }
