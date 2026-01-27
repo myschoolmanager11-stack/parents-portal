@@ -33,7 +33,7 @@ function handleItemClick(name) {
     }
 }
 
-/* ===== فتح نافذة ===== */
+/* ===== نافذة الرابط ===== */
 function openModal(title) {
     modalTitle.textContent = "إدخال رابط: " + title;
     input.value = "";
@@ -42,7 +42,6 @@ function openModal(title) {
     modal.style.display = "flex";
 }
 
-/* ===== إغلاق ===== */
 function closeModal() {
     stopQR();
     modal.style.display = "none";
@@ -55,20 +54,18 @@ function saveLink() {
         messageBox.textContent = "يرجى إدخال رابط صحيح";
         return;
     }
-
     localStorage.setItem(currentKey, link);
     closeModal();
     loadFile(link);
 }
 
-/* ===== تحويل رابط Drive ===== */
+/* ===== عرض الملف ===== */
 function toPreviewLink(link) {
     const match = link.match(/\/d\/([^/]+)/);
     if (!match) return link;
     return `https://drive.google.com/file/d/${match[1]}/preview`;
 }
 
-/* ===== عرض الملف ===== */
 function loadFile(link) {
     viewer.innerHTML = "";
     viewerToolbar.style.display = "flex";
@@ -78,7 +75,7 @@ function loadFile(link) {
     viewer.appendChild(iframe);
 }
 
-/* ===== أزرار الشريط ===== */
+/* ===== أزرار المعاينة ===== */
 function editCurrentLink() {
     openModal("تعديل الرابط");
     input.value = localStorage.getItem(currentKey) || "";
@@ -127,7 +124,8 @@ function stopQR() {
 
 /* ===== مسح الكل ===== */
 function clearAllLinks() {
-    if (confirm("هل تريد مسح جميع الروابط؟")) {
+    document.getElementById("dropdownMenu").style.display = "none";
+    if (confirm("⚠️ هل تريد مسح جميع الروابط المحفوظة؟")) {
         localStorage.clear();
         location.reload();
     }
