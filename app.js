@@ -34,7 +34,7 @@ function handleItemClick(name) {
     }
 }
 
-/* ===== فتح نافذة الإدخال ===== */
+/* ===== فتح النافذة ===== */
 function openModal(title) {
     modalTitle.textContent = "إدخال رابط: " + title;
     input.value = "";
@@ -49,7 +49,7 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-/* ===== حفظ الرابط ===== */
+/* ===== حفظ ===== */
 function saveLink() {
     const link = input.value.trim();
     if (!link) {
@@ -62,14 +62,14 @@ function saveLink() {
     loadFile(link);
 }
 
-/* ===== تحويل رابط Drive إلى Preview ===== */
+/* ===== تحويل رابط Drive ===== */
 function toPreviewLink(link) {
     const match = link.match(/\/d\/([^/]+)/);
     if (!match) return link;
     return `https://drive.google.com/file/d/${match[1]}/preview`;
 }
 
-/* ===== تحميل / معاينة الملف ===== */
+/* ===== عرض الملف ===== */
 function loadFile(link) {
     viewer.innerHTML = "";
     downloadContainer.style.display = "none";
@@ -78,44 +78,14 @@ function loadFile(link) {
 
     const iframe = document.createElement("iframe");
     iframe.src = previewLink;
-    iframe.allow = "autoplay";
     iframe.style.width = "100%";
     iframe.style.height = "600px";
     iframe.style.border = "1px solid #ccc";
     iframe.style.borderRadius = "8px";
 
-    iframe.onload = () => {
-        // المعاينة اشتغلت
-        downloadBtn.href = link;
-        downloadContainer.style.display = "block";
-    };
-
-    iframe.onerror = () => {
-        showPreviewError(link);
-    };
-
     viewer.appendChild(iframe);
 
-    // حماية إضافية: لو Google منعت العرض بعد التحميل
-    setTimeout(() => {
-        try {
-            if (!iframe.contentDocument) {
-                showPreviewError(link);
-            }
-        } catch {
-            showPreviewError(link);
-        }
-    }, 2500);
-}
-
-/* ===== في حال فشل المعاينة ===== */
-function showPreviewError(link) {
-    viewer.innerHTML = `
-        <div style="text-align:center; padding:30px; color:#555">
-            ⚠️ لا يمكن عرض المعاينة مباشرة.<br>
-            قد يتطلب الملف تسجيل الدخول إلى Google.
-        </div>
-    `;
+    // زر التحميل دائمًا متوفر
     downloadBtn.href = link;
     downloadContainer.style.display = "block";
 }
@@ -146,7 +116,7 @@ function stopQR() {
     }
 }
 
-/* ===== مسح جميع الروابط ===== */
+/* ===== مسح الكل ===== */
 function clearAllLinks() {
     if (confirm("هل تريد مسح جميع الروابط؟")) {
         localStorage.clear();
