@@ -5,32 +5,41 @@
     <title>Myschoolmanager – عارض الملفات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- QR -->
     <script src="https://unpkg.com/html5-qrcode"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top-bar">
-    <button class="menu-btn" onclick="toggleMenu()" title="القائمة">☰</button>
+
+    <div class="right-buttons">
+        <button class="menu-btn" onclick="toggleMenu()" title="القائمة">☰</button>
+    </div>
 
     <div class="app-title">
-        <div id="mainTitle">👋 مرحبًا بك في فضائك الرقمي</div>
+        <div id="mainTitle">👋 مرحبًا بك في الفضاء الرقمي</div>
         <div id="subTitle"></div>
     </div>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div onclick="handleItemClick('سجل الغيابات')">📋 سجل الغيابات</div>
+        <div onclick="handleItemClick('استقبال الأولياء')">👨‍👩‍👧 استقبال الأولياء</div>
+        <div onclick="handleItemClick('الفروض والاختبارات')">📝 الفروض والاختبارات</div>
+        <div onclick="handleItemClick('جدول التوقيت')">🕒 جدول التوقيت</div>
+
+        <!-- فاصل -->
+        <div class="menu-separator"></div>
+
+        <!-- مسح الكل -->
+        <div class="menu-danger" onclick="clearAllLinks()">🗑 مسح جميع الروابط</div>
+    </div>
+
 </header>
 
-<div class="dropdown-menu" id="dropdownMenu">
-    <div onclick="handleItemClick('سجل الغيابات')">📋 سجل الغيابات</div>
-    <div onclick="handleItemClick('استقبال الأولياء')">👨‍👩‍👧 استقبال الأولياء</div>
-    <div onclick="handleItemClick('الفروض والاختبارات')">📝 الفروض والاختبارات</div>
-    <div onclick="handleItemClick('جدول التوقيت')">🕒 جدول التوقيت</div>
-
-    <div class="menu-separator"></div>
-    <div id="clearAllBtn" class="menu-danger disabled" onclick="clearAllLinks()">🗑 مسح جميع الروابط</div>
-</div>
-
 <div class="container">
-    <h2 id="selectedTitle">🌐 الفضاء الرقمي لخدمات التربية والتعليم</h2>
+    <h2 id="selectedTitle">الفضاء الرقمي لخدمات التربية والتعليم 🌐</h2>
 
      <p class="welcome-text" id="welcomeText">
         يُعتبر الفضاء الرقمي منصة نوعية ووسيلة تكنولوجية رقمية فعالة لتعزيز التواصل بين الإدارة وأولياء الأمور.<br>
@@ -39,7 +48,7 @@
     </p>
 
 
-    <!-- شريط الأدوات -->
+    <!-- شريط أدوات المعاينة -->
     <div class="viewer-toolbar" id="viewerToolbar" style="display:none;">
         <button title="تعديل الرابط" onclick="editCurrentLink()">✏️</button>
         <button title="تحميل الملف" onclick="downloadCurrentFile()">⬇️</button>
@@ -49,21 +58,32 @@
     <div class="viewer" id="viewerContainer"></div>
 </div>
 
-<!-- نافذة الرابط -->
+<!-- نافذة إدخال الرابط -->
 <div class="modal" id="linkModal">
     <div class="modal-content">
         <h3 id="modalTitle"></h3>
+
         <input type="text" id="driveLink" placeholder="الصق رابط الملف هنا أو امسح QR">
+
         <div class="modal-buttons">
             <button class="save" onclick="saveLink()">💾 حفظ</button>
             <button class="scan" onclick="startQR()">📷 QR</button>
-            <button class="close" onclick="closeModal()">✖</button>
+            <button class="close" onclick="closeModal()">✖ إغلاق</button>
         </div>
+
         <div id="qr-reader"></div>
         <div id="message"></div>
     </div>
 </div>
 
+<footer class="app-footer">
+    <div class="footer-marquee">
+        Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026 ©
+    </div>
+</footer>
+
 <script src="app.js"></script>
 </body>
 </html>
+
+
