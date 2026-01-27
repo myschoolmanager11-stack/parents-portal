@@ -16,13 +16,7 @@ body {
     position: relative;
 }
 
-.right-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.menu-btn,
-.clear-all-btn {
+.menu-btn {
     background: transparent;
     border: none;
     color: white;
@@ -57,17 +51,34 @@ body {
     display: none;
     z-index: 1000;
     min-width: 220px;
-    color: #333;
 }
 
 .dropdown-menu div {
-    padding: 12px;
+    padding: 12px 14px;
     cursor: pointer;
     color: #3f51b5;
+    font-size: 14px;
 }
 
 .dropdown-menu div:hover {
     background: #f0f4ff;
+}
+
+/* فاصل */
+.menu-separator {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 6px 0;
+}
+
+/* زر خطير */
+.menu-danger {
+    color: #d32f2f !important;
+    font-weight: 600;
+}
+
+.menu-danger:hover {
+    background: #fdeaea;
 }
 
 /* ===== المحتوى ===== */
