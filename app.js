@@ -25,7 +25,10 @@ function handleItemClick(name) {
     currentKey = "drive_" + name;
     selectedTitle.textContent = name;
     subTitle.textContent = name;
-    welcomeText.style.display = "none";
+
+    if (welcomeText) {
+        welcomeText.style.display = "none";
+    }
 
     const savedLink = localStorage.getItem(currentKey);
 
@@ -42,7 +45,7 @@ function openModal(title) {
     input.value = "";
     messageBox.textContent = "";
     document.getElementById("qr-reader").innerHTML = "";
-    modal.style.display = "flex"; // 🔴 الحل الجذري
+    modal.style.display = "flex";
 }
 
 /* إغلاق */
