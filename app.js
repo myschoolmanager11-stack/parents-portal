@@ -2,8 +2,7 @@ const modal = document.getElementById("linkModal");
 const modalTitle = document.getElementById("modalTitle");
 const input = document.getElementById("driveLink");
 const viewer = document.getElementById("viewerContainer");
-const downloadBtn = document.getElementById("downloadBtn");
-const downloadContainer = document.getElementById("downloadContainer");
+const viewerToolbar = document.getElementById("viewerToolbar");
 const selectedTitle = document.getElementById("selectedTitle");
 const subTitle = document.getElementById("subTitle");
 const messageBox = document.getElementById("message");
@@ -17,7 +16,7 @@ function toggleMenu() {
     menu.style.display = (menu.style.display === "block") ? "none" : "block";
 }
 
-/* ===== الضغط على عنصر ===== */
+/* ===== اختيار عنصر ===== */
 function handleItemClick(name) {
     document.getElementById("dropdownMenu").style.display = "none";
 
@@ -34,7 +33,7 @@ function handleItemClick(name) {
     }
 }
 
-/* ===== فتح النافذة ===== */
+/* ===== فتح نافذة ===== */
 function openModal(title) {
     modalTitle.textContent = "إدخال رابط: " + title;
     input.value = "";
@@ -72,22 +71,32 @@ function toPreviewLink(link) {
 /* ===== عرض الملف ===== */
 function loadFile(link) {
     viewer.innerHTML = "";
-    downloadContainer.style.display = "none";
-
-    const previewLink = toPreviewLink(link);
+    viewerToolbar.style.display = "flex";
 
     const iframe = document.createElement("iframe");
-    iframe.src = previewLink;
-    iframe.style.width = "100%";
-    iframe.style.height = "600px";
-    iframe.style.border = "1px solid #ccc";
-    iframe.style.borderRadius = "8px";
-
+    iframe.src = toPreviewLink(link);
     viewer.appendChild(iframe);
+}
 
-    // زر التحميل دائمًا متوفر
-    downloadBtn.href = link;
-    downloadContainer.style.display = "block";
+/* ===== أزرار الشريط ===== */
+function editCurrentLink() {
+    openModal("تعديل الرابط");
+    input.value = localStorage.getItem(currentKey) || "";
+}
+
+function downloadCurrentFile() {
+    const link = localStorage.getItem(currentKey);
+    if (link) window.open(link, "_blank");
+}
+
+function deleteCurrentLink() {
+    if (confirm("هل تريد حذف هذا الرابط؟")) {
+        localStorage.removeItem(currentKey);
+        viewer.innerHTML = "";
+        viewerToolbar.style.display = "none";
+        selectedTitle.textContent = "تم حذف الملف";
+        subTitle.textContent = "";
+    }
 }
 
 /* ===== QR ===== */
