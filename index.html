@@ -27,24 +27,18 @@
         <div id="subTitle"></div>
     </div>
 
-    <!-- القائمة -->
     <div class="dropdown-menu" id="dropdownMenu">
-        <div onclick="openItem('سجل الغيابات والمراسلات الإدارية')">📋 سجل الغيابات والمراسلات</div>
-        <div onclick="openItem('جدول استقبال أولياء التلاميذ')">👨‍👩‍👧 جدول استقبال الأولياء</div>
-        <div onclick="openItem('جدول الفروض والاختبارات')">📝 جدول الفروض والاختبارات</div>
-        <div onclick="openItem('جدول التوقيت الأسبوعي للدراسة')">🕒 جدول التوقيت</div>
+        <div onclick="handleItemClick('سجل الغيابات والمراسلات')">📋 سجل الغيابات</div>
+        <div onclick="handleItemClick('استقبال الأولياء')">👨‍👩‍👧 استقبال الأولياء</div>
+        <div onclick="handleItemClick('الفروض والاختبارات')">📝 الفروض</div>
+        <div onclick="handleItemClick('جدول التوقيت')">🕒 جدول التوقيت</div>
     </div>
 
 </header>
 
 <div class="container">
     <h2 id="selectedTitle">مرحبا بكم في فضاء خدماتنا الرقمية 👋</h2>
-
-    <button id="editLinkBtn" class="edit-btn" onclick="editCurrentLink()" style="display:none;">
-        ✏ تعديل الرابط
-    </button>
-
-    <p class="welcome-text">
+     <p class="welcome-text">
         يُعتبر فضاء الأولياء منصة رقمية نوعية ووسيلة تكنولوجية فعالة لتعزيز مشاركة أولياء الأمور في العملية التعليمية.<br>
         يمكنهم الاطلاع على الوثائق والملفات المختلفة بطريقة سهلة وسريعة، سواء عبر رابط مباشر أو مسح رمز QR.<br>
         الرجاء اختيار أحد العناصر من القائمة العلوية للمتابعة.
@@ -53,9 +47,7 @@
     <div class="viewer" id="viewerContainer"></div>
 
     <div id="downloadContainer" style="display:none; text-align:center; margin-top:10px;">
-        <a id="downloadBtn" class="download-btn" target="_blank">
-            ⬇ تحميل الملف
-        </a>
+        <a id="downloadBtn" class="download-btn" target="_blank">⬇ تحميل الملف</a>
     </div>
 </div>
 
@@ -79,7 +71,7 @@
 
 <footer class="app-footer">
     <div class="footer-marquee">
-       Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026 © 
+        Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026 ©
     </div>
 </footer>
 
