@@ -130,3 +130,14 @@ function clearAllLinks() {
         location.reload();
     }
 }
+
+function openContact() {
+    document.getElementById("dropdownMenu").style.display = "none";
+
+    const contactMessage =
+        "📞 الهاتف: 0550 00 00 00\n\n" +
+        "📧 البريد الإلكتروني: myschoolmanager11@gmail.com\n\n" +
+        "💬 WhatsApp: https://wa.me/213550000000";
+
+    alert(contactMessage);
+}
