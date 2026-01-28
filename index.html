@@ -29,7 +29,7 @@
         <div onclick="handleItemClick('رزنامة الفروض والاختبارات')">📝 رزنامة الفروض والاختبارات</div>
         <div onclick="handleItemClick('جدول التوقيت الأسبوعي')">🕒 جدول التوقيت الأسبوعي</div>
         <div onclick="handleItemClick('استمارات ووثائق مختلفة')">📁 استمارات ووثائق مختلفة</div>
-        <div class="menu-contact" onclick="openContact()">📞 اتصل بنا</div>
+        <div class="menu-contact" onclick="openContactModal()">📞 اتصل بنا</div
         <!-- فاصل -->
         <div class="menu-separator"></div>
 
@@ -75,7 +75,28 @@
         <div id="message"></div>
     </div>
 </div>
+<!-- نافذة اتصل بنا -->
+    <div class="modal" id="contactModal">
+    <div class="modal-content">
 
+        <h3>📨 اتصل بنا</h3>
+
+        <input type="email" id="contactEmail" placeholder="بريدك الإلكتروني" required>
+
+        <input type="tel" id="contactPhone" placeholder="رقم الهاتف (اختياري)">
+
+        <textarea id="contactMessage"
+                  placeholder="اكتب مضمون رسالتك هنا..."
+                  rows="5"></textarea>
+
+        <div class="modal-buttons">
+            <button class="save" onclick="sendContactMessage()">📤 إرسال</button>
+            <button class="close" onclick="closeContactModal()">✖ إغلاق</button>
+        </div>
+
+    </div>
+</div>
+    
 <footer class="app-footer">
     <div class="footer-marquee">
         Myschoolmanager – AAbdousoft@gmail.com | 2010 - 2026 ©
