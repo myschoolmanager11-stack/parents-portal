@@ -161,14 +161,15 @@ function sendContactMessage() {
         "مضمون الرسالة:\n" +
         message;
 
-    const mailtoLink =
-        "mailto:myschoolmanager11@gmail.com" +
-        "?subject=" + encodeURIComponent(subject) +
+    const gmailLink =
+        "https://mail.google.com/mail/?view=cm&fs=1" +
+        "&to=myschoolmanager11@gmail.com" +
+        "&su=" + encodeURIComponent(subject) +
         "&body=" + encodeURIComponent(body);
 
-    window.location.href = mailtoLink;
+    window.open(gmailLink, "_blank");
 
-    // إغلاق النافذة تلقائيًا
     setTimeout(closeContactModal, 500);
 }
+
 
