@@ -159,11 +159,24 @@ body {
 }
 
 /* عنصر اتصل بنا */
-.menu-contact {
-    color: #2e7d32; /* أخضر مطمئن */
-    font-weight: 600;
+.modal-content h3 {
+    margin-top: 0;
+    text-align: center;
 }
 
-.menu-contact:hover {
-    background: #e8f5e9;
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
 }
+
+.modal-content textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
