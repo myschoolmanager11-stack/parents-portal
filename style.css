@@ -158,3 +158,12 @@ body {
     to { transform: translateX(100%); }
 }
 
+/* عنصر اتصل بنا */
+.menu-contact {
+    color: #2e7d32; /* أخضر مطمئن */
+    font-weight: 600;
+}
+
+.menu-contact:hover {
+    background: #e8f5e9;
+}
