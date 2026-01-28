@@ -1,8 +1,13 @@
 body {
     margin: 0;
     font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    background: #f2f4ff;
     direction: rtl;
+
+    background: linear-gradient(
+        135deg,
+        #e3f2fd,
+        #e8f5e9
+    );
 }
 
 /* ===== الشريط العلوي ===== */
@@ -83,11 +88,8 @@ body {
 
 /* ===== المحتوى ===== */
 .container {
-    max-width: 900px;
-    margin: 20px auto;
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 /* ===== شريط أدوات المعاينة ===== */
@@ -157,3 +159,4 @@ body {
     from { transform: translateX(-100%); }
     to { transform: translateX(100%); }
 }
+
