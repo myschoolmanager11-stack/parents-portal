@@ -154,7 +154,7 @@ function sendContactMessage() {
         return;
     }
 
-    const subject = "رسالة من بوابة أولياء التلاميذ";
+    const subject = "رسالة من بوابة خدمات أولياء التلاميذ";
     const body =
         "البريد الإلكتروني: " + email + "\n" +
         "رقم الهاتف: " + (phone || "غير مدخل") + "\n\n" +
@@ -171,5 +171,6 @@ function sendContactMessage() {
 
     setTimeout(closeContactModal, 500);
 }
+
 
 
