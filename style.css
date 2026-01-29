@@ -1,6 +1,25 @@
+/* ===== توحيد الخط في كامل التطبيق ===== */
+body,
+button,
+input,
+select,
+textarea,
+.dropdown-menu,
+.modal-content,
+table,
+th,
+td {
+    font-family: Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 8.5pt;
+}
+
+h2, h3 {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
 body {
     margin: 0;
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
     background: #f2f4ff;
     direction: rtl;
 }
@@ -179,4 +198,5 @@ body {
     resize: vertical;
     min-height: 100px;
 }
+
 
