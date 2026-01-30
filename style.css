@@ -169,7 +169,7 @@ body {
 .footer-marquee {
     white-space: nowrap;
     font-size: 13px;
-    animation: move 12s linear infinite;
+    animation: move 20s linear infinite;
 }
 
 @keyframes move {
@@ -198,5 +198,6 @@ body {
     resize: vertical;
     min-height: 100px;
 }
+
 
 
